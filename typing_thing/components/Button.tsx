@@ -1,7 +1,7 @@
 "use client"
 export default function Button(){
     function onClick(){
-        console.log("Josh is so super sexy and so freaking hot!!!!!!!!!!!!")
+        console.log("This is to show functions being used in buttons")
     }
     return(
         <>

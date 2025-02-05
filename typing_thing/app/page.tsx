@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Button from "@/components/Button"
-import {OtherButton} from "@/components/Button"
 import Words from "@/components/Words"
 
 export default function Home() {
