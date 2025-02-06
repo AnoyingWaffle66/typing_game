@@ -10,8 +10,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     if (req.method == 'POST') {
         var score: Score = JSON.parse(req.body);
-
         scores.push(score)
+
+        writeScores(scores)
         res.status(200).json({status:"ok"})
         return
     }
@@ -25,15 +26,6 @@ interface Score {
     wpm: number,
     accuracy: number,
     combo: number
-}
-
-function isScore(object: any): object is Score {
-    return (
-        typeof object === 'object' &&
-        object !== null &&
-        typeof object.name === 'string' &&
-        typeof object.score === 'number'
-    )
 }
 
 function readScores(): Score[] {
