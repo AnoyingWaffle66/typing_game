@@ -2,12 +2,12 @@
 
 function Letter({letters}: {letters: string}){
     return(
-        <div className="flex">
+        <div className="flex p-3">
             {
                 letters.split("").map((char, index) =>(
-                    <span key={index} className="px-0.5">
+                    <div key={index} className="px-0.5 text-4xl">
                         {char}
-                    </span>
+                    </div>
                 ))
             }
         </div>
@@ -16,19 +16,13 @@ function Letter({letters}: {letters: string}){
 
 export default function Words({words}: {words: string[]}){
     return(
-        <div className="flex flex-wrap">
+        <div style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
             {
                 words.map((word, wordIndex) => (
                     <div key={wordIndex} className="flex">
                         <Letter letters={word}/>
-                        {
-                            wordIndex < words.length - 1 && (
-                                <span className="px-0.5 whitespace-pre"> </span>
-                            )
-                        }
                     </div>
                 ))
-                
             }
         </div>
     )
