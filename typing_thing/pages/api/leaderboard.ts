@@ -21,7 +21,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
 interface Score {
     name: string,
-    score: number
+    score: number,
+    wpm: number,
+    accuracy: number,
+    combo: number
 }
 
 function isScore(object: any): object is Score {
