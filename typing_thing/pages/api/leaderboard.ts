@@ -6,28 +6,31 @@ const STORAGE_DIRECTORY = 'storage/'
 const LEADERBOARD_FILE = 'leaderboard.json'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    var scores: Score[] = []
+    var scores: Score[] = readScores();
 
-    scores.push({
-        name: "Test1",
-        score: 1
-    })
+    if (req.method == 'POST') {
+        var score: Score = JSON.parse(req.body);
 
-    scores.push({
-        name: "Test2",
-        score: 4
-    })
+        scores.push(score)
+        res.status(200).json({status:"ok"})
+        return
+    }
 
-    writeScores(scores)
-
-    res.status(200).json(
-        {test: readScores()[0]}
-    )
+    res.status(200).json(readScores());
 }
 
 interface Score {
     name: string,
     score: number
+}
+
+function isScore(object: any): object is Score {
+    return (
+        typeof object === 'object' &&
+        object !== null &&
+        typeof object.name === 'string' &&
+        typeof object.score === 'number'
+    )
 }
 
 function readScores(): Score[] {
