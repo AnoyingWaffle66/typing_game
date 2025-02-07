@@ -1,4 +1,8 @@
 "use client"
+
+import { useState } from "react"
+
+
 export default function Button(){
     function onClick(){
         console.log("This is to show functions being used in buttons")
@@ -12,11 +16,15 @@ export default function Button(){
     )
 }
 
-export function OtherButton(){
+export function SettingsButton(){
+    // const [openSettings, openSettingsClicked] = useState(false)
+    // const handleClick = () => {
+    //     openSettingsClicked((prev) => !prev)
+    // }
     return(
         <>
-            <button>
-                I'm other button
+            <button className="">
+                <img src="./settingsCog.png" width={40}></img>
             </button>
         </>
     )
