@@ -17,10 +17,6 @@ export default function Button(){
 }
 
 export function SettingsButton(){
-    // const [openSettings, openSettingsClicked] = useState(false)
-    // const handleClick = () => {
-    //     openSettingsClicked((prev) => !prev)
-    // }
     return(
         <>
             <button className="">
