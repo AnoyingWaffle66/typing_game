@@ -75,7 +75,7 @@ export default function Words({words}: {words: string[]}){
     
 
     return(
-        <div className="flex flex-wrap">
+        <div style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
             <KeyInput onPress={handleKeyPress} testStarted={testStarted} />
             {
                 words.map((word, wordIndex) => (
@@ -88,7 +88,6 @@ export default function Words({words}: {words: string[]}){
                         }
                     </div>
                 ))
-                
             }
         </div>
     )
