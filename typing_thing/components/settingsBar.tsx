@@ -4,7 +4,7 @@ import { useState } from "react"
 
 
 const SettingsBar = ({setText, initialText}: {setText:Function, initialText:string}) => {
-    const [username, setUsername] = useState(initialText || '')
+    const [username, setUsername] = useState(initialText || 'LATITDCTNITS')
     
     const onChange = (event) => {
         setUsername(event.target.value)
