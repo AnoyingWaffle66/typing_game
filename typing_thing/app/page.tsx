@@ -6,6 +6,9 @@ import { SettingsButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
 import Words from "@/components/Words"
 
+import Countdown from "@/components/Countdown"
+import LeaderboardButton from "@/components/Leaderboard-Button";
+
 export default function Home() {
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
@@ -48,7 +51,13 @@ export default function Home() {
     </div>
     <div>
       <div className="h-screen flex items-center justify-center mr-10 ml-10">
+
         <Words words={words}/>
+
+        <Countdown/>
+
+        <LeaderboardButton/>
+
         </div>
     </div>
     </>
