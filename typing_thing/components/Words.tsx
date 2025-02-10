@@ -4,12 +4,12 @@ import KeyInput from './keyInput'
 
 function Letter({ letters, current }: { letters: string; current: string }) {
     return (
-      <div className="flex">
+      <div className="flex p-3">
         {letters.split("").map((char, index) => {
             //Sets the letters color based on if it's correct or not. Currently only changes incorrect colors
           const className = index < current.length ? char === current[index] ? "correct" : "incorrect" : "";
           return (
-            <span key={index} className={`px-0.5 ${className}`}>
+            <span key={index} className={`px-0.5 text-4xl ${className}`}>
               {char}
             </span>
           );
