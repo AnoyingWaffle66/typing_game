@@ -1,20 +1,25 @@
 'use client'
 import { useState } from 'react'
 import KeyInput from './keyInput'
+import React from 'react'
 
-function Letter({ letters, current }: { letters: string; current: string }) {
+function Letter({ letters, current, cursorPos}: { letters: string; current: string; cursorPos?: number }) {
+
     return (
       <div className="flex p-3">
-        {letters.split("").map((char, index) => {
-            //Sets the letters color based on if it's correct or not. Currently only changes incorrect colors
-          const className = index < current.length ? char === current[index] ? "correct" : "incorrect" : "";
-          return (
-            
-            <span key={index} className={`px-0.5 text-4xl ${className}`}>
-              {char}
-            </span>
-          );
-        })}
+        {letters.split("").map((char, index) => (
+          <React.Fragment key={index}>
+            {cursorPos !== undefined && cursorPos === index && (
+            <span className='cursor'>|</span>
+          )}
+          <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
+          {char}
+        </span>
+          </React.Fragment>
+        ))}
+            {cursorPos !== undefined && cursorPos === letters.length && (
+            <span className='cursor'>|</span>
+          )}
       </div>
     );
   }
@@ -85,7 +90,8 @@ export default function Words({words}: {words: string[]}){
               : wordIndex === currentIndex ? typedKey : "";
               return (
                 <div key={wordIndex} className="flex">
-                  <Letter letters={word} current={current} />
+                  <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
+
                   {wordIndex < words.length - 1 && (
                     <span className='px-0.5 whitespace-pre'></span>
                   )}
