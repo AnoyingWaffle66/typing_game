@@ -57,7 +57,11 @@ export default function Home() {
     </div>
     <div>
       <div className="h-screen flex items-center justify-center mr-10 ml-10">
-        <Words words={wordList}/>
+        { wordList.length > 0 ? (
+          <Words words={wordList}/>
+        ) : (
+          <p>Loading...</p>
+        )}
         <Countdown/>
         <LeaderboardButton/>
         </div>

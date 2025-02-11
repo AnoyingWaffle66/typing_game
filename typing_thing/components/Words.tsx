@@ -29,11 +29,21 @@ export default function Words({words}: {words: string[]}) {
   const [typedKey, setTypedKey] = useState<string>('');
   const [testStarted, setTestStarted] = useState<boolean>(false);
   const [spacebarCount, setSpacebarCount] = useState<number>(0);
+  const [subWordList, setSubWordList] = useState<string[]>([])
+
+  if (subWordList.length == 0) {
+    for (let i = 0; i < 50; i++) {
+      const random = Math.floor(Math.random() * words.length)
+      subWordList.push(words[random])
+    }
+  }
+
+  console.log(subWordList.length)
   
   const handleKeyPress = (keyPress: string | null) => {
-    const currentWord = words[currentIndex]
+    const currentWord = subWordList[currentIndex]
     
-    if (currentIndex === words.length - 1 && typedKey.length === currentWord.length) {
+    if (currentIndex === subWordList.length - 1 && typedKey.length === currentWord.length) {
       console.log("Test complete")
       setTestStarted(false)
       return
@@ -46,7 +56,7 @@ export default function Words({words}: {words: string[]}) {
     if (keyPress === "Backspace") {
       setTypedKey((prev) => prev.substring(0, prev.length-1))
     } else if (keyPress === " ") {
-      if (currentIndex < words.length - 1) {
+      if (currentIndex < subWordList.length - 1) {
         setTypedWords(prev => [...prev, typedKey])
         setIndex((prev) => prev + 1)
       }
@@ -69,17 +79,18 @@ export default function Words({words}: {words: string[]}) {
     <div style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
       <KeyInput onPress={handleKeyPress} testStarted={testStarted}/>
       {
-        words.map((word, wordIndex) => {
+        subWordList.map((word, wordIndex) => {
           const current = wordIndex < currentIndex ? typedWords[wordIndex]
             : wordIndex === currentIndex ? typedKey : "";
-            return (
-              <div key={wordIndex} className="flex">
-                <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
-                {wordIndex < words.length - 1 && (
-                  <span className='px-0.5 whitespace-pre'></span>
-                )}
-                </div>
-              )
+          
+          return (
+            <div key={wordIndex} className="flex">
+              <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
+              { wordIndex < subWordList.length - 1 && (
+                <span className='px-0.5 whitespace-pre'></span>
+              )}
+              </div>
+          )
         })
       }
     </div>
