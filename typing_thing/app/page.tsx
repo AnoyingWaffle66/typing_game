@@ -12,6 +12,7 @@ import LeaderboardButton from "@/components/Leaderboard-Button";
 export default function Home() {
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
+  const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {
     openSettingsClicked(prev => !prev)
@@ -19,24 +20,29 @@ export default function Home() {
 
   useEffect(() => {
     const savedText = localStorage.getItem('inputText')
-    if (savedText){
+    if (savedText) {
       setInputText(savedText)
     }
   }, [])
 
-  const handleSetText = (text) => {
+  useEffect(() => {
+    (async () => {
+      console.log("test2")
+      const response = await fetch('http://127.0.0.1:3000/api/wordlist', {
+        method: 'POST',
+        body: 'english'
+      })
+      const json = await response.json()
+  
+      setWordList(json.words)
+    })()
+  }, [])
+
+  const handleSetText = (text: any) => {
     setInputText(text)
     localStorage.setItem('inputText', text)
   }
 
-  const words = [
-    "the","be","of","and","a","to",
-    "in","he","have","it","that","for","they","I",
-    "with","as","not","on","she","at","by","this",
-    "we","you","do","but","from","or","which","one",
-    "would","all","will","there","say","who","make","when",
-    "can","more","if","no","man","out","other"
-  ]
   return (
     <>
       {
@@ -51,13 +57,9 @@ export default function Home() {
     </div>
     <div>
       <div className="h-screen flex items-center justify-center mr-10 ml-10">
-
-        <Words words={words}/>
-
+        <Words words={wordList}/>
         <Countdown/>
-
         <LeaderboardButton/>
-
         </div>
     </div>
     </>
