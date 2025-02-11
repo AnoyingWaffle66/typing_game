@@ -5,9 +5,10 @@ import React, { useState, useEffect } from "react";
 import { SettingsButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
 import Words from "@/components/Words"
-
 import Countdown from "@/components/Countdown"
 import LeaderboardButton from "@/components/Leaderboard-Button";
+
+const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
 
 export default function Home() {
   const [openSettings, openSettingsClicked] = useState(false)
@@ -27,8 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      console.log("test2")
-      const response = await fetch('http://127.0.0.1:3000/api/wordlist', {
+      const response = await fetch(WORDLIST_API, {
         method: 'POST',
         body: 'english'
       })
