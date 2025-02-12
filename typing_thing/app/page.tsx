@@ -2,23 +2,16 @@
 import Button from "@/components/Button"
 import "@/styles/global.css"
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
 
-import { SettingsButton, RepeatButton } from "@/components/Button";
-=======
-import { SettingsButton, LeaderboardButton } from "@/components/Button";
->>>>>>> f4cb808 (Timer functionality + Hardcoded Leaderboard (IN JSON) For Now)
+import { SettingsButton, RepeatButton, LeaderboardButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
 import LeaderboardBar from "@/components/LeaderboardBar";
 import Words from "@/components/Words"
 import Countdown from "@/components/Countdown"
-<<<<<<< HEAD
-import LeaderboardButton from "@/components/Leaderboard-Button";
+
 import { json } from "stream/consumers";
 
 const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
-=======
->>>>>>> f4cb808 (Timer functionality + Hardcoded Leaderboard (IN JSON) For Now)
 
 export default function Home() {
   sessionStorage.setItem('testActive', 'false')
@@ -92,19 +85,14 @@ export default function Home() {
           <p>Loading...</p>
         )}
         <Countdown/>
-<<<<<<< HEAD
-        <LeaderboardButton/>
-=======
->>>>>>> f4cb808 (Timer functionality + Hardcoded Leaderboard (IN JSON) For Now)
         </div>
 
     </div>
-<<<<<<< HEAD
+
     <div className="button button:hover button:active" onClick={onRepeat}>
           <RepeatButton/>
     </div>
 
-=======
     {
       openLB && (
         <div className="absolute pt-7 pl-3 w-scren bg-gray-600">
@@ -115,7 +103,6 @@ export default function Home() {
     <div className="absolute center-8 top-8" onClick={handleLBClick}>
       <LeaderboardButton/>
     </div>
->>>>>>> f4cb808 (Timer functionality + Hardcoded Leaderboard (IN JSON) For Now)
     </>
   )
 }
