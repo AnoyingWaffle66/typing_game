@@ -73,13 +73,10 @@ export default function Home() {
 
         <LeaderboardButton/>
         </div>
-        <>
-          {/* <button className="button button:hover button:active" onClick={onRepeat}>repeat</button> */}
-        </>
-        <div className="button button:hover button:active" onClick={onRepeat}>
-          <RepeatButton/>
-        </div>
 
+    </div>
+    <div className="button button:hover button:active" onClick={onRepeat}>
+          <RepeatButton/>
     </div>
 
     </>
