@@ -56,7 +56,7 @@ const KeyInput: React.FC<KeyProps> = ({ onPress}) => {
   }, [currentPressed, count]);
 
   useEffect(() => {
-    if (count > 5) return;
+    if (count > 60) return;
 
     if (currentPressed) {
       // gives the user entered key/character to the onPress function to use for test.
