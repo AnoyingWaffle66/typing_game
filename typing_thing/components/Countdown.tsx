@@ -9,6 +9,13 @@ function Countdown() {
     const [count, setCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
 
+    const resetTimer = () => {
+        setCount(0)
+        setWordCount(0)
+        setIsActive(false)
+    }
+    window.addEventListener('storage', resetTimer)
+
     // For Handling Keyboard Input
     useEffect(() => {
         const handleKeyPress = (event : KeyboardEvent) => {
@@ -37,7 +44,6 @@ function Countdown() {
         const intervalId = setInterval(() => {
             setCount(prevCount => prevCount + 1);
         }, 1000);
-
         return () => clearInterval(intervalId);
     }
     }, [isActive]);

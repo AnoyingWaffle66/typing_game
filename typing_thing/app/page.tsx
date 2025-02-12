@@ -2,17 +2,33 @@
 import Button from "@/components/Button"
 import "@/styles/global.css"
 import React, { useState, useEffect } from "react";
-import { SettingsButton } from "@/components/Button";
+
+import { SettingsButton, RepeatButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
 import Words from "@/components/Words"
 import Countdown from "@/components/Countdown"
 import LeaderboardButton from "@/components/Leaderboard-Button";
+import { json } from "stream/consumers";
 
 const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
 
 export default function Home() {
+  sessionStorage.setItem('testActive', 'false')
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
+  
+  // reset time
+  // clear typed words
+  // render same words again
+  const onRepeat = () => {
+    console.log(sessionStorage.getItem('testActive'))
+    if (sessionStorage.getItem('testActive') === 'true'){
+      sessionStorage.setItem('testActive', 'false')
+      window.dispatchEvent(new Event('storage'))
+    }
+    console.log(sessionStorage.getItem('testActive'))
+    console.log('button clicked')
+  }
   const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {
@@ -65,7 +81,12 @@ export default function Home() {
         <Countdown/>
         <LeaderboardButton/>
         </div>
+
     </div>
+    <div className="button button:hover button:active" onClick={onRepeat}>
+          <RepeatButton/>
+    </div>
+
     </>
   )
 }

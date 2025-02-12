@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { ButtonHTMLAttributes, useState } from "react"
 
 
 export default function Button(){
@@ -21,6 +21,16 @@ export function SettingsButton(){
         <>
             <button className="">
                 <img src="./settingsCog.png" width={40}></img>
+            </button>
+        </>
+    )
+}
+
+export function RepeatButton(){
+    return(
+        <>
+            <button className="">
+                Repeat
             </button>
         </>
     )

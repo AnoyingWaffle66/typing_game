@@ -27,10 +27,10 @@ export default function Words({words}: {words: string[]}) {
   const [typedWords, setTypedWords] = useState<string[]>([])
   const [currentIndex, setIndex] = useState<number>(0)
   const [typedKey, setTypedKey] = useState<string>('');
-  const [testStarted, setTestStarted] = useState<boolean>(false);
   const [spacebarCount, setSpacebarCount] = useState<number>(0);
   const [subWordList, setSubWordList] = useState<string[]>([])
 
+    
   if (subWordList.length == 0) {
     for (let i = 0; i < 50; i++) {
       const random = Math.floor(Math.random() * words.length)
@@ -39,45 +39,49 @@ export default function Words({words}: {words: string[]}) {
   }
 
   console.log(subWordList.length)
-  
-  const handleKeyPress = (keyPress: string | null) => {
-    const currentWord = subWordList[currentIndex]
+     const resetTest = () => {
+      setTypedKey('')
+      setTypedWords([])
+      setSpacebarCount(0)
+      setIndex(0)
+     }
+
+    window.addEventListener('storage', () => {
+      resetTest();
+      console.log("storage event")
+    })
+
+    const handleKeyPress = (keyPress: string | null) => {
+
+        if (sessionStorage.getItem('testActive') === 'false') {
+          resetTest()
+          sessionStorage.setItem('testActive', 'true')
+        }
     
-    if (currentIndex === subWordList.length - 1 && typedKey.length === currentWord.length) {
-      console.log("Test complete")
-      setTestStarted(false)
-      return
+        if (keyPress === "Backspace") {
+           setTypedKey((prev) => prev.substring(0, prev.length-1))
+        }
+        else if (keyPress === " ") {
+          if (currentIndex < subWordList.length - 1) {
+            setTypedWords(prev => [...prev, typedKey])
+            setIndex((prev) => prev + 1)
+          }
+           setSpacebarCount((prev) => prev + 1)
+           setTypedKey("")
+        } else {
+           setTypedKey((prev) => prev + keyPress)
+        }
+
+        // for debug purposes
+        // console.log(spacebarCount)
+        // console.log(typedKey)
+        // const thing = sessionStorage.getItem('testActive')
+        // console.log(thing)
     }
-
-    if (!testStarted) {
-      setTestStarted(true)
-    }
-    
-    if (keyPress === "Backspace") {
-      setTypedKey((prev) => prev.substring(0, prev.length-1))
-    } else if (keyPress === " ") {
-      if (currentIndex < subWordList.length - 1) {
-        setTypedWords(prev => [...prev, typedKey])
-        setIndex((prev) => prev + 1)
-      }
-
-      setSpacebarCount((prev) => prev + 1)
-      setTypedKey("")
-    } else {
-      setTypedKey((prev) => prev + keyPress)
-    }
-
-    console.log(spacebarCount)
-    console.log(typedKey)
-  }
-
-  if (!testStarted) {
-    setTestStarted(true)
-  }
     
   return (
     <div style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
-      <KeyInput onPress={handleKeyPress} testStarted={testStarted}/>
+      <KeyInput onPress={handleKeyPress}/>
       {
         subWordList.map((word, wordIndex) => {
           const current = wordIndex < currentIndex ? typedWords[wordIndex]
