@@ -5,13 +5,15 @@ import React, { useState, useEffect } from "react";
 import { SettingsButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
 import Words from "@/components/Words"
-
 import Countdown from "@/components/Countdown"
 import LeaderboardButton from "@/components/Leaderboard-Button";
+
+const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
 
 export default function Home() {
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
+  const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {
     openSettingsClicked(prev => !prev)
@@ -19,24 +21,28 @@ export default function Home() {
 
   useEffect(() => {
     const savedText = localStorage.getItem('inputText')
-    if (savedText){
+    if (savedText) {
       setInputText(savedText)
     }
   }, [])
 
-  const handleSetText = (text) => {
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(WORDLIST_API, {
+        method: 'POST',
+        body: 'english'
+      })
+      const json = await response.json()
+  
+      setWordList(json.words)
+    })()
+  }, [])
+
+  const handleSetText = (text: any) => {
     setInputText(text)
     localStorage.setItem('inputText', text)
   }
 
-  const words = [
-    "the","be","of","and","a","to",
-    "in","he","have","it","that","for","they","I",
-    "with","as","not","on","she","at","by","this",
-    "we","you","do","but","from","or","which","one",
-    "would","all","will","there","say","who","make","when",
-    "can","more","if","no","man","out","other"
-  ]
   return (
     <>
       {
@@ -51,13 +57,13 @@ export default function Home() {
     </div>
     <div>
       <div className="h-screen flex items-center justify-center mr-10 ml-10">
-
-        <Words words={words}/>
-
+        { wordList.length > 0 ? (
+          <Words words={wordList}/>
+        ) : (
+          <p>Loading...</p>
+        )}
         <Countdown/>
-
         <LeaderboardButton/>
-
         </div>
     </div>
     </>
