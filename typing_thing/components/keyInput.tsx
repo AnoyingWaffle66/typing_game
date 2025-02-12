@@ -14,8 +14,6 @@ const keys: string[] = [
 interface KeyProps {
   // The current pressed key is passed here to be used elsewhere/ does function stuff. Callback function
   onPress: (pressedKey: string | null) => void;
-  // self explanatory
-  testStarted: boolean;
 }
 
 // Handles the input capture

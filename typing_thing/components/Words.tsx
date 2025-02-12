@@ -31,26 +31,28 @@ export default function Words({words}: {words: string[]}){
     const [currentIndex, setIndex] = useState<number>(0)
     // User input string. This is to compare the word the user types with the word displayed
     const [typedKey, setTypedKey] = useState<string>('');
-    // boolean to track if the test has started or ended. used to let the keyinput function to start capturing user input
-    const [testStarted, setTestStarted] = useState<boolean>(false);
     // Holds the number of times the space bar has been pressed or when the user has moved to the next word.
     const [spacebarCount, setSpacebarCount] = useState<number>(0);
-  
+
+     const resetTest = () => {
+      setTypedKey('')
+      setTypedWords([])
+      setSpacebarCount(0)
+      setIndex(0)
+     }
+
+    window.addEventListener('storage', () => {
+      resetTest();
+      console.log("storage event")
+    })
+
     // Passed into Keyinput so that we can bring back the user input to use in this function/component. Callback function to be used in keyinput
     const handleKeyPress = (keyPress: string | null) => {
-        // Is the current word in the array. We keep track of this so that we know where we are in the test.
-        const currentWord = words[currentIndex]
-        // This if statement is meant to stop capturing user input if the user has entered the last letter of the last word in the list of words.
-        if (currentIndex === words.length - 1 && typedKey.length === currentWord.length) {
-          console.log("Test complete")
-          setTestStarted(false)
-          // returns so that it exists the function before the test can be started again.
-          return
-        }
 
         // Starts test 
-        if (!testStarted) {
-          setTestStarted(true)
+        if (sessionStorage.getItem('testActive') === 'false') {
+          resetTest()
+          sessionStorage.setItem('testActive', 'true')
         }
     
         // Handles the event of when user presses backspace key
@@ -76,14 +78,16 @@ export default function Words({words}: {words: string[]}){
         }
 
         // for debug purposes
-        console.log(spacebarCount)
-        console.log(typedKey)
+        // console.log(spacebarCount)
+        // console.log(typedKey)
+        // const thing = sessionStorage.getItem('testActive')
+        // console.log(thing)
     }
 
     
     return (
-      <div style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
-        <KeyInput onPress={handleKeyPress} testStarted={testStarted}/>
+      <div  style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
+        <KeyInput onPress={handleKeyPress}/>
         {
           words.map((word, wordIndex) => {
             const current = wordIndex < currentIndex ? typedWords[wordIndex]

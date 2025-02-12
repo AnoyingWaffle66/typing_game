@@ -40,3 +40,21 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+.button {
+  background-color: black;
+  border-color: darkgrey;
+  border-radius: 20px;
+  opacity: 1;
+  justify-content: center;
+  width: 100;
+  text-align: center;
+}
+
+.button:hover {
+  opacity: 0.5;
+}
+
+.button:active {
+  opacity: 1;
+}
