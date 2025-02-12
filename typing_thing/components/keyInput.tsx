@@ -1,5 +1,6 @@
 'use client';
 
+import { isAbsolute } from 'path';
 import React, { useState, useEffect } from 'react';
 
 // array of valid characters to capture.
@@ -20,11 +21,18 @@ interface KeyProps {
 const KeyInput: React.FC<KeyProps> = ({ onPress}) => {
   const [currentPressed, setCurrent] = useState<string | null>(null);
 
+  const [count, setCount] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+
   useEffect(() => {
     // is called when any key is pressed
     const onKeyDown = (event: KeyboardEvent) => {
+      if (!isActive) {
+        setIsActive(true);
+      }
+
       // if the key the user has pressed gives a valid character the char will be captured.
-      if (keys.includes(event.key)) {
+      if (keys.includes(event.key) && !event.repeat) {
         setCurrent(event.key);
       }
     };
@@ -45,14 +53,27 @@ const KeyInput: React.FC<KeyProps> = ({ onPress}) => {
 
     };
     // Dependency. This is to tell the useEffect when to update or rerender.
-  }, [currentPressed]);
+  }, [currentPressed, count]);
 
   useEffect(() => {
+    if (count > 5) return;
+
     if (currentPressed) {
       // gives the user entered key/character to the onPress function to use for test.
       onPress(currentPressed);
+      setCurrent(null);
     }
-  }, [currentPressed]);
+  }, [currentPressed, count]);
+
+  useEffect(() => {
+    if (isActive) {
+    const intervalId = setInterval(() => {
+      setCount(prevCount => prevCount + 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }
+  }, [isActive, count]);
 
   // returns null because this function does not update the ui directly.
   return null;
