@@ -25,3 +25,13 @@ export function SettingsButton(){
         </>
     )
 }
+
+export function LeaderboardButton() {
+    return (
+        <div>
+            <button className="">
+                <img src="./trophy-dark.bmp" width={40}></img>
+            </button>
+        </div>
+    );
+}

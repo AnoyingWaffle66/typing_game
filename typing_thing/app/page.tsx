@@ -2,19 +2,24 @@
 import Button from "@/components/Button"
 import "@/styles/global.css"
 import React, { useState, useEffect } from "react";
-import { SettingsButton } from "@/components/Button";
+import { SettingsButton, LeaderboardButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
+import LeaderboardBar from "@/components/LeaderboardBar";
 import Words from "@/components/Words"
 
 import Countdown from "@/components/Countdown"
-import LeaderboardButton from "@/components/Leaderboard-Button";
 
 export default function Home() {
   const [openSettings, openSettingsClicked] = useState(false)
+  const [openLB, openLBClicked] = useState(false)
   const [inputText, setInputText] = useState('')
 
   const handleClick = () => {
     openSettingsClicked(prev => !prev)
+  }
+
+  const handleLBClick = () => {
+    openLBClicked(prev => !prev)
   }
 
   useEffect(() => {
@@ -55,10 +60,17 @@ export default function Home() {
         <Words words={words}/>
 
         <Countdown/>
-
-        <LeaderboardButton/>
-
         </div>
+    </div>
+    {
+      openLB && (
+        <div className="absolute pt-7 pl-3 w-scren bg-gray-600">
+          <LeaderboardBar/>
+        </div>
+      )
+    }
+    <div className="absolute center-8 top-8" onClick={handleLBClick}>
+      <LeaderboardButton/>
     </div>
     </>
   )

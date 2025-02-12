@@ -9,38 +9,51 @@ function Countdown() {
     const [count, setCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
 
+    // 'Borrowed' from the keyInput component
+    const [currentKey, setCurrentKey] = useState<string | null>(null);
+
     // For Handling Keyboard Input
     useEffect(() => {
+        if (count >= 60) return;
+
         const handleKeyPress = (event : KeyboardEvent) => {
+            setCurrentKey(event.key)
 
             // Sets Active
             if (!isActive) {
                 setIsActive(true);
             }
 
-            if (event.key == ' ' && count < 60) {
+            if (event.key == ' ' && count < 60 && currentKey == null) {
                 setWordCount(prevWordCount => prevWordCount + 1);
             }
         };
 
-        window.addEventListener("keydown", handleKeyPress);
+        const handleKeyRelease = (event : KeyboardEvent) => {
+            setCurrentKey(null);
+        };
 
-        return () => window.removeEventListener("keydown", handleKeyPress);
-    }, []);
+        window.addEventListener("keydown", handleKeyPress);
+        window.addEventListener("keyup", handleKeyRelease);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyPress);
+            window.removeEventListener("keyup", handleKeyRelease);
+        }
+    }, [count, currentKey]);
 
     // For Handling The Countdown
     useEffect(() => {
+        if (count >= 60) return;
         // Keeps returning until a key has been pressed.
         if (!isActive) return;
 
-        if (count < 60) {
         const intervalId = setInterval(() => {
             setCount(prevCount => prevCount + 1);
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }
-    }, [isActive]);
+    }, [isActive, count]);
 
     return (
         <div>

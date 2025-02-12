@@ -1,0 +1,16 @@
+[
+      {
+        "name": "Bob",
+        "score": 999999,
+        "wpm": 197,
+        "accuracy": 99,
+        "combo": 171
+      },
+      {
+        "name": "Smith",
+        "score": 1010101,
+        "wpm": 216,
+        "accuracy": 98,
+        "combo": 191
+      }
+    ]
