@@ -9,16 +9,14 @@ function Letter({ letters, current, cursorPos}: { letters: string; current: stri
       {letters.split("").map((char, index) => (
         <React.Fragment key={index}>
           {cursorPos !== undefined && cursorPos === index && (
-          <span className='cursor'>|</span>
+          <span className='whitespace-pre cursor'></span>
         )}
-        <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
+        <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""} ${cursorPos !== undefined && cursorPos === index ? "cursor" : ""}`}>
         {char}
       </span>
         </React.Fragment>
       ))}
-      {cursorPos !== undefined && cursorPos === letters.length && (
-        <span className='cursor'>|</span>
-      )}
+      <span className={`px-0.5 whitespace-pre ${cursorPos !== undefined && cursorPos === letters.length ? "cursor" : ""}`}></span>
     </div>
   );
 }
@@ -90,9 +88,6 @@ export default function Words({words}: {words: string[]}) {
           return (
             <div key={wordIndex} className="flex">
               <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
-              { wordIndex < subWordList.length - 1 && (
-                <span className='px-0.5 whitespace-pre'></span>
-              )}
               </div>
           )
         })
