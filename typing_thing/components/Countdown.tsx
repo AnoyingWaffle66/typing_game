@@ -50,7 +50,7 @@ function Countdown() {
 
     return (
         <div>
-            <h1>WPM: {Math.ceil(wordCount / (count / 60))}</h1>
+            <h1>WPM: {Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h1>
             <progress value={count / 60}/>
         </div>
     );
