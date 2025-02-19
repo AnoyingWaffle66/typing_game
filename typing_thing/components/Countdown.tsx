@@ -5,7 +5,7 @@ import React, {useState, useEffect} from 'react';
 // TO-DO (Make it run on an event instead of right away)
 
 function Countdown() {
-    const [wordCount, setWordCount] = useState(0);
+    // const [wordCount, setWordCount] = useState(0);
     const [count, setCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
 
@@ -24,10 +24,9 @@ function Countdown() {
             if (!isActive) {
                 setIsActive(true);
             }
-
-            if (event.key == ' ' && count < 60) {
-                setWordCount(prevWordCount => prevWordCount + 1);
-            }
+            // if (event.key == ' ' && count < 60) {
+            //     setWordCount(prevWordCount => prevWordCount + 1);
+            // }
         };
 
         window.addEventListener("keydown", handleKeyPress);
@@ -50,7 +49,7 @@ function Countdown() {
 
     return (
         <div>
-            <h1>WPM: {Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h1>
+            <h1>WPM: {count <= 0 ? "Start typing" : Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h1>
             <progress value={count / 60}/>
         </div>
     );
