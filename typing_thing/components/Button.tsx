@@ -38,7 +38,7 @@ export function RepeatButton( { toExecute }: { toExecute: () => void } ) {
     )
 }
 
-export function NextButton( ){
+export function NextButton(){
     return(
         <>
             <button className="button button:hover button:active">

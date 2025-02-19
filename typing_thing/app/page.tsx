@@ -81,16 +81,11 @@ export default function Home() {
           <Countdown />
           <LeaderboardButton />
         </div>
-
-      </div>
-      <div className="flex flex-col items-center">
-        <div className="absolute w-auto ml-5 mr-5 p-4 flex gap-10">
+        <div className="absolute top-2/3 left-1/2 transform -translate-x-1/2 flex gap-10 justify-center">
           <RepeatButton toExecute={onRepeat} />
           <NextButton />
         </div>
       </div>
-
-
     </>
   )
 }
