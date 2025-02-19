@@ -14,7 +14,8 @@ function Countdown() {
         setWordCount(0)
         setIsActive(false)
     }
-    window.addEventListener('storage', resetTimer)
+    window.addEventListener('reset', resetTimer)
+    window.addEventListener('next', resetTimer)
 
     // For Handling Keyboard Input
     useEffect(() => {

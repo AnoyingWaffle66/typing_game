@@ -25,13 +25,18 @@ export function SettingsButton(){
         </>
     )
 }
+export function RepeatButton(  ) {
 
-export function RepeatButton( { toExecute }: { toExecute: () => void } ) {
-    
+      const onRepeat = () => {
+        if (sessionStorage.getItem('testActive') === 'true') {
+          sessionStorage.setItem('testActive', 'false')
+          window.dispatchEvent(new Event('reset'))
+        }
+      }
 
     return(
         <>
-            <button className="button button:hover button:active" onClick={toExecute}>
+            <button className="button button:hover button:active" onClick={onRepeat}>
                 Repeat
             </button>
         </>
@@ -39,11 +44,21 @@ export function RepeatButton( { toExecute }: { toExecute: () => void } ) {
 }
 
 export function NextButton(){
+
+    const onNext = () => {
+        if (sessionStorage.getItem('testActive') === 'true') {
+            sessionStorage.setItem('testActive', 'false')  
+          }
+          window.dispatchEvent(new Event('next'))
+        }
+
     return(
         <>
-            <button className="button button:hover button:active">
+            <button className="button button:hover button:active" onClick={onNext}>
                 Next
             </button>
         </>
     )
+
+
 }

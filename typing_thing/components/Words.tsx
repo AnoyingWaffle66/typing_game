@@ -46,9 +46,20 @@ export default function Words({ words }: { words: string[] }) {
     setIndex(0)
   }
 
-  window.addEventListener('storage', () => {
-    resetTest();
-    console.log("storage event")
+  const newTest = () => {
+    setSubWordList([])
+    setTypedKey('')
+    setTypedWords([])
+    setSpacebarCount(0)
+    setIndex(0)
+  }
+
+  window.addEventListener('reset', () => {
+    resetTest()
+  })
+
+  window.addEventListener('next', () => {
+    newTest()
   })
 
   const handleKeyPress = (keyPress: string | null) => {
@@ -72,11 +83,7 @@ export default function Words({ words }: { words: string[] }) {
       setTypedKey((prev) => prev + keyPress)
     }
 
-    // for debug purposes
-    // console.log(spacebarCount)
-    // console.log(typedKey)
-    // const thing = sessionStorage.getItem('testActive')
-    // console.log(thing)
+    
   }
 
   return (
