@@ -26,11 +26,23 @@ export function SettingsButton(){
     )
 }
 
-export function RepeatButton(){
+export function RepeatButton( { toExecute }: { toExecute: () => void } ) {
+    
+
     return(
         <>
-            <button className="">
+            <button className="button button:hover button:active" onClick={toExecute}>
                 Repeat
+            </button>
+        </>
+    )
+}
+
+export function NextButton( ){
+    return(
+        <>
+            <button className="button button:hover button:active">
+                Next
             </button>
         </>
     )

@@ -17,7 +17,7 @@ interface KeyProps {
 }
 
 // Handles the input capture
-const KeyInput: React.FC<KeyProps> = ({ onPress}) => {
+const KeyInput: React.FC<KeyProps> = ({ onPress }) => {
   const [currentPressed, setCurrent] = useState<string | null>(null);
 
   useEffect(() => {
