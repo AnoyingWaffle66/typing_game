@@ -36,10 +36,10 @@ function Letter({ letters, current, cursorPos}: { letters: string; current: stri
           {cursorPos !== undefined && cursorPos === index && (
             <Cursor cursorPos={cursorPos} letterWidths={letterWidths}/>
           )}
-         <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
-           {char}
-         </span>
-       </React.Fragment>
+          <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
+            {char}
+          </span>
+        </React.Fragment>
       ))}
       {cursorPos !== undefined && cursorPos === letters.length && (
         <Cursor cursorPos={cursorPos} letterWidths={letterWidths}/>
