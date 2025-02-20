@@ -9,7 +9,7 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
     className='cursor'
     style={{
       position: 'absolute',
-      left: `${letterWidths.current.slice(0, cursorPos).reduce((a, b) => a + b, 0) + 9}px`,
+      left: `${(letterWidths.current.slice(0, cursorPos).reduce((a, b) => a + b + 4, 0)) + 10}px`,
       top: '5',
     }}
     ></div>
@@ -36,7 +36,7 @@ function Letter({ letters, current, cursorPos}: { letters: string; current: stri
           {cursorPos !== undefined && cursorPos === index && (
             <Cursor cursorPos={cursorPos} letterWidths={letterWidths}/>
           )}
-         <span key={index} className={`0.2-px text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
+         <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
            {char}
          </span>
        </React.Fragment>
@@ -54,7 +54,6 @@ export default function Words({words}: {words: string[]}) {
   const [typedKey, setTypedKey] = useState<string>('');
   const [spacebarCount, setSpacebarCount] = useState<number>(0);
   const [subWordList, setSubWordList] = useState<string[]>([])
-
     
   if (subWordList.length == 0) {
     for (let i = 0; i < 50; i++) {
