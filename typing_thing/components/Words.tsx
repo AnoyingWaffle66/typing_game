@@ -20,12 +20,12 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
                 let thing2 = Number(localStorage.getItem('previousCursorPosition'))
                 if (thing != thing2 && localStorage.getItem('newLines') != '0') {
                     console.log("something")
-                    localStorage.setItem('newLines', '0')
                 } else if (thing != thing2) {
                     localStorage.setItem('newLines', "1")
                 }
                 localStorage.setItem('previousCursorPosition', thing.toString())
-            }}></div>
+            }}>
+        </div>
     )
 }
 
