@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import KeyInput from './keyInput'
 import React from 'react'
 import { stringify } from 'querystring';
