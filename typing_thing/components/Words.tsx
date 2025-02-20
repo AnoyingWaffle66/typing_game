@@ -61,50 +61,50 @@ export default function Words({words}: {words: string[]}) {
       const random = Math.floor(Math.random() * words.length)
       subWordList.push(words[random])
     }
+  }
 
-    console.log(subWordList.length)
-    const resetTest = () => {
-        setTypedKey('')
-        setTypedWords([])
-        setSpacebarCount(0)
-        setIndex(0)
+  const resetTest = () => {
+    setTypedKey('')
+    setTypedWords([])
+    setSpacebarCount(0)
+    setIndex(0)
+}
+
+window.addEventListener('storage', () => {
+    resetTest();
+    console.log("storage event")
+})
+
+  const handleKeyPress = (keyPress: string | null) => {
+    if (sessionStorage.getItem('testActive') === 'false') {
+        resetTest()
+        sessionStorage.setItem('testActive', 'true')
     }
 
-    window.addEventListener('storage', () => {
-        resetTest();
-        console.log("storage event")
-    })
-
-    const handleKeyPress = (keyPress: string | null) => {
-
-        if (sessionStorage.getItem('testActive') === 'false') {
-            resetTest()
-            sessionStorage.setItem('testActive', 'true')
+    if (keyPress === "Backspace") {
+        setTypedKey((prev) => prev.substring(0, prev.length - 1))
+    } else if (keyPress === " ") {
+        if (currentIndex < subWordList.length - 1) {
+            setTypedWords(prev => [...prev, typedKey])
+            setIndex((prev) => prev + 1)
         }
 
-        if (keyPress === "Backspace") {
-            setTypedKey((prev) => prev.substring(0, prev.length - 1))
-        }
-        else if (keyPress === " ") {
-            if (currentIndex < subWordList.length - 1) {
-                setTypedWords(prev => [...prev, typedKey])
-                setIndex((prev) => prev + 1)
-            }
-            if (typedKey == subWordList[currentIndex]) {
-                setSpacebarCount((prev) => prev + 1)
-                localStorage.setItem('correctSpaces', String(spacebarCount))
-            }
-            setTypedKey("")
-        } else {
-            setTypedKey((prev) => prev + keyPress)
+        if (typedKey == subWordList[currentIndex]) {
+            setSpacebarCount((prev) => prev + 1)
+            localStorage.setItem('correctSpaces', String(spacebarCount))
         }
 
-        // for debug purposes
-        // console.log(spacebarCount)
-        // console.log(typedKey)
-        // const thing = sessionStorage.getItem('testActive')
-        // console.log(thing)
+        setTypedKey("")
+    } else {
+        setTypedKey((prev) => prev + keyPress)
     }
+
+    // for debug purposes
+    // console.log(spacebarCount)
+    // console.log(typedKey)
+    // const thing = sessionStorage.getItem('testActive')
+    // console.log(thing)
+}
     
   return (
     <div style={{height: 200}} className="flex flex-wrap items-center justify-center overflow-clip">
@@ -126,5 +126,4 @@ export default function Words({words}: {words: string[]}) {
       }
     </div>
   )
-
 }

@@ -62,10 +62,6 @@ export default function Home() {
 
   return (
     <>
-    <head>
-      <title>Tyson Type</title>
-    </head>
-    <main>
       {
         openSettings && (
           <div className="absolute pt-7 pl-3 w-screen bg-gray-600">
@@ -78,7 +74,7 @@ export default function Home() {
       </div>
       <div>
         <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
-          <Countdown />
+          <Countdown/>
         </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
           { wordList.length > 0 ? (
@@ -86,13 +82,12 @@ export default function Home() {
           ) : (
             <p>Loading...</p>
           )}
-         <LeaderboardButton/>
+          <LeaderboardButton/>
         </div>
       </div>
       <div className="button button:hover button:active" onClick={onRepeat}>
         <RepeatButton/>
       </div>
-    </main>
     </>
   )
 }
