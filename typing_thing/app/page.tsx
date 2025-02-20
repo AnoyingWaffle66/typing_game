@@ -70,23 +70,23 @@ export default function Home() {
         )
       }
       <div className="absolute right-8 top-8" onClick={handleClick}>
-        <SettingsButton />
+        <SettingsButton/>
       </div>
-      <div className="pt-20 mt-20">
-          <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
-            <Countdown />
-          </div>
+      <div>
+        <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
+          <Countdown/>
+        </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
-          {wordList.length > 0 ? (
-            <Words words={wordList} />
+          { wordList.length > 0 ? (
+            <Words words={wordList}/>
           ) : (
             <p>Loading...</p>
           )}
-          <LeaderboardButton />
+          <LeaderboardButton/>
         </div>
       </div>
       <div className="button button:hover button:active" onClick={onRepeat}>
-        <RepeatButton />
+        <RepeatButton/>
       </div>
     </>
   )
