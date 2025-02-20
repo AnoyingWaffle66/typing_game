@@ -3,24 +3,51 @@ import { useState } from 'react'
 import KeyInput from './keyInput'
 import React from 'react'
 
-function Letter({ letters, current, cursorPos}: { letters: string; current: string; cursorPos?: number }) {
+function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>; }) {
   return (
-    <div className="flex p-3">
+    <div
+    className='cursor'
+    style={{
+      position: 'absolute',
+      left: `${letterWidths.current.slice(0, cursorPos).reduce((a, b) => a + b, 0) + 9}px`,
+      top: '5',
+    }}
+    ></div>
+  )
+}
+
+function Letter({ letters, current, cursorPos}: { letters: string; current: string; cursorPos?: number }) {
+  const letterWidths = React.useRef<number[]>([]);
+
+  React.useEffect(() => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (context) {
+      context.font = '36px Arial';
+      letterWidths.current = letters.split("").map(char => context.measureText(char).width);
+    }
+  }, [letters]);
+
+  return (
+    <div className="flex p-3 relative">
       {letters.split("").map((char, index) => (
         <React.Fragment key={index}>
           {cursorPos !== undefined && cursorPos === index && (
-          <span className='whitespace-pre cursor'></span>
-        )}
-        <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""} ${cursorPos !== undefined && cursorPos === index ? "cursor" : ""}`}>
-        {char}
-      </span>
-        </React.Fragment>
+            <Cursor cursorPos={cursorPos} letterWidths={letterWidths}/>
+          )}
+         <span key={index} className={`0.2-px text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
+           {char}
+         </span>
+       </React.Fragment>
       ))}
-      <span className={`px-0.5 whitespace-pre ${cursorPos !== undefined && cursorPos === letters.length ? "cursor" : ""}`}></span>
+      {cursorPos !== undefined && cursorPos === letters.length && (
+        <Cursor cursorPos={cursorPos} letterWidths={letterWidths}/>
+      )}
     </div>
   );
 }
-  
+
 export default function Words({words}: {words: string[]}) {
   const [typedWords, setTypedWords] = useState<string[]>([])
   const [currentIndex, setIndex] = useState<number>(0)
@@ -87,8 +114,11 @@ export default function Words({words}: {words: string[]}) {
           
           return (
             <div key={wordIndex} className="flex">
-              <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
-              </div>
+            <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
+              {wordIndex < subWordList.length - 1 && (
+                <span className='px-0.5 whitespace-pre'></span>
+              )}
+            </div>
           )
         })
       }

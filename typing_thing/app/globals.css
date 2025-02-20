@@ -29,7 +29,11 @@ body {
 }
 
 .cursor {
-  background-color: gray;
+  animation: blink 1s step-end infinite;
+  background-color: blueviolet;
+  border-radius: 2px;
+  width: 4px;
+  height: 42px;
 }
 
 @keyframes blink {
