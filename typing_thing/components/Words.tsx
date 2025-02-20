@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import KeyInput from './keyInput'
 import React from 'react'
+import { stringify } from 'querystring';
 
 function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>; }) {
   return (
@@ -60,40 +61,42 @@ export default function Words({words}: {words: string[]}) {
       const random = Math.floor(Math.random() * words.length)
       subWordList.push(words[random])
     }
-  }
 
-  console.log(subWordList.length)
-     const resetTest = () => {
-      setTypedKey('')
-      setTypedWords([])
-      setSpacebarCount(0)
-      setIndex(0)
-     }
+    console.log(subWordList.length)
+    const resetTest = () => {
+        setTypedKey('')
+        setTypedWords([])
+        setSpacebarCount(0)
+        setIndex(0)
+    }
 
     window.addEventListener('storage', () => {
-      resetTest();
-      console.log("storage event")
+        resetTest();
+        console.log("storage event")
     })
 
     const handleKeyPress = (keyPress: string | null) => {
 
         if (sessionStorage.getItem('testActive') === 'false') {
-          resetTest()
-          sessionStorage.setItem('testActive', 'true')
+            resetTest()
+            sessionStorage.setItem('testActive', 'true')
         }
-    
+
         if (keyPress === "Backspace") {
-           setTypedKey((prev) => prev.substring(0, prev.length-1))
+            setTypedKey((prev) => prev.substring(0, prev.length - 1))
         }
         else if (keyPress === " ") {
-          if (currentIndex < subWordList.length - 1) {
-            setTypedWords(prev => [...prev, typedKey])
-            setIndex((prev) => prev + 1)
-          }
-           setSpacebarCount((prev) => prev + 1)
-           setTypedKey("")
+            if (currentIndex < subWordList.length - 1) {
+                setTypedWords(prev => [...prev, typedKey])
+                setIndex((prev) => prev + 1)
+            }
+            if (typedKey == subWordList[currentIndex]) {
+                setSpacebarCount((prev) => prev + 1)
+                localStorage.setItem('correctSpaces', String(spacebarCount))
+            }
+            setTypedKey("")
         } else {
-           setTypedKey((prev) => prev + keyPress)
+            setTypedKey((prev) => prev + keyPress)
         }
 
         // for debug purposes
@@ -123,5 +126,5 @@ export default function Words({words}: {words: string[]}) {
       }
     </div>
   )
-    
+
 }

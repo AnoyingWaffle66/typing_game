@@ -16,13 +16,13 @@ export default function Home() {
   sessionStorage.setItem('testActive', 'false')
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
-  
+
   // reset time
   // clear typed words
   // render same words again
   const onRepeat = () => {
     console.log(sessionStorage.getItem('testActive'))
-    if (sessionStorage.getItem('testActive') === 'true'){
+    if (sessionStorage.getItem('testActive') === 'true') {
       sessionStorage.setItem('testActive', 'false')
       window.dispatchEvent(new Event('storage'))
     }
@@ -36,6 +36,7 @@ export default function Home() {
   }
 
   useEffect(() => {
+    localStorage.setItem('correctSpaces', "0")
     const savedText = localStorage.getItem('inputText')
     if (savedText) {
       setInputText(savedText)
@@ -49,7 +50,7 @@ export default function Home() {
         body: 'english'
       })
       const json = await response.json()
-  
+
       setWordList(json.words)
     })()
   }, [])
@@ -68,7 +69,7 @@ export default function Home() {
       {
         openSettings && (
           <div className="absolute pt-7 pl-3 w-screen bg-gray-600">
-            <SettingsBar setText={handleSetText} initialText={inputText}/>
+            <SettingsBar setText={handleSetText} initialText={inputText} />
           </div>
         )
       }
@@ -76,13 +77,15 @@ export default function Home() {
         <SettingsButton/>
       </div>
       <div>
-        <div className="h-screen flex items-center justify-center mr-10 ml-10">
+        <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
+          <Countdown />
+        </div>
+        <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
           { wordList.length > 0 ? (
             <Words words={wordList}/>
           ) : (
             <p>Loading...</p>
           )}
-         <Countdown/>
          <LeaderboardButton/>
         </div>
       </div>
