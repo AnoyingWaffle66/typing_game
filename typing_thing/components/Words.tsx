@@ -78,7 +78,7 @@ export default function Words({ words }: { words: string[] }) {
     setIndex(0)
   }
 
-  window.addEventListener('storage', () => {
+  window.addEventListener('reset', () => {
     resetTest();
   })
 
