@@ -3,7 +3,7 @@ import Button from "@/components/Button"
 import "@/styles/global.css"
 import React, { useState, useEffect } from "react";
 
-import { SettingsButton, RepeatButton } from "@/components/Button";
+import { SettingsButton, RepeatButton, NextButton } from "@/components/Button";
 import SettingsBar from "@/components/settingsBar";
 import Words from "@/components/Words"
 import Countdown from "@/components/Countdown"
@@ -20,21 +20,12 @@ export default function Home() {
   // reset time
   // clear typed words
   // render same words again
-  const onRepeat = () => {
-    console.log(sessionStorage.getItem('testActive'))
-    if (sessionStorage.getItem('testActive') === 'true') {
-      sessionStorage.setItem('testActive', 'false')
-      window.dispatchEvent(new Event('storage'))
-    }
-    console.log(sessionStorage.getItem('testActive'))
-    console.log('button clicked')
-  }
   const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {
     openSettingsClicked(prev => !prev)
   }
-
+  
   useEffect(() => {
     localStorage.setItem('correctSpaces', "0")
     const savedText = localStorage.getItem('inputText')
@@ -70,10 +61,10 @@ export default function Home() {
         )
       }
       <div className="absolute right-8 top-8" onClick={handleClick}>
-        <SettingsButton/>
+        <SettingsButton />
       </div>
       <div>
-        <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
+      <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
           <Countdown/>
         </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
@@ -84,9 +75,10 @@ export default function Home() {
           )}
           <LeaderboardButton/>
         </div>
-      </div>
-      <div className="button button:hover button:active" onClick={onRepeat}>
-        <RepeatButton/>
+        <div className="absolute top-2/3 left-1/2 transform -translate-x-1/2 flex gap-10 justify-center">
+          <RepeatButton />
+          <NextButton/>
+        </div>
       </div>
     </>
   )

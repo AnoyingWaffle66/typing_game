@@ -25,13 +25,41 @@ export function SettingsButton(){
         </>
     )
 }
+export function RepeatButton(  ) {
 
-export function RepeatButton(){
+      const onRepeat = () => {
+        if (sessionStorage.getItem('testActive') === 'true') {
+          sessionStorage.setItem('testActive', 'false')
+          window.dispatchEvent(new Event('reset'))
+        }
+      }
+
     return(
         <>
-            <button className="">
-                Repeat
+            <button className="rounded-3xl p-2 hover:bg-gray-300 active:bg-gray-400 transition" onClick={onRepeat}>
+                <img src="./repeatIcon.png" width={45}/>
             </button>
         </>
     )
+}
+
+export function NextButton(){
+
+    const onNext = () => {
+        if (sessionStorage.getItem('testActive') === 'true') {
+            sessionStorage.setItem('testActive', 'false')  
+          }
+          window.dispatchEvent(new Event('next'))
+        }
+
+    return(
+        <>
+            <button className="rounded-3xl p-2 hover:bg-gray-300 active:bg-gray-400 transition" onClick={onNext}>
+                {/* Next */}
+                <img src="./arrow.png" width={40} />
+            </button>
+        </>
+    )
+
+
 }

@@ -13,8 +13,10 @@ function Countdown() {
     const resetTimer = () => {
         setCount(0)
         setIsActive(false)
+        setSmoothCount(0)
     }
-    window.addEventListener('storage', resetTimer)
+    window.addEventListener('reset', resetTimer)
+    window.addEventListener('next', resetTimer)
 
     // For Handling Keyboard Input
     useEffect(() => {
