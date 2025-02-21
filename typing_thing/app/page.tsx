@@ -20,7 +20,6 @@ export default function Home() {
   // reset time
   // clear typed words
   // render same words again
-
   const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {
@@ -28,6 +27,7 @@ export default function Home() {
   }
   
   useEffect(() => {
+    localStorage.setItem('correctSpaces', "0")
     const savedText = localStorage.getItem('inputText')
     if (savedText) {
       setInputText(savedText)
@@ -64,14 +64,16 @@ export default function Home() {
         <SettingsButton />
       </div>
       <div>
-        <div className="h-screen flex items-center justify-center mr-10 ml-10">
-          {wordList.length > 0 ? (
-            <Words words={wordList} />
+      <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
+          <Countdown/>
+        </div>
+        <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
+          { wordList.length > 0 ? (
+            <Words words={wordList}/>
           ) : (
             <p>Loading...</p>
           )}
-          <Countdown />
-          <LeaderboardButton />
+          <LeaderboardButton/>
         </div>
         <div className="absolute top-2/3 left-1/2 transform -translate-x-1/2 flex gap-10 justify-center">
           <RepeatButton />

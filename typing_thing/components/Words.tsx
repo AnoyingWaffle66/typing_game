@@ -2,14 +2,40 @@
 import { useState } from 'react'
 import KeyInput from './keyInput'
 import React from 'react'
+import { stringify } from 'querystring';
+
+function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>; }) {
+  return (
+    <div
+      className='cursor'
+      style={{
+        position: 'absolute',
+        left: `${(letterWidths.current.slice(0, cursorPos).reduce((a, b) => a + b + 4, 0)) + 10}px`,
+        top: '5',
+      }}
+    ></div>
+  )
+}
 
 function Letter({ letters, current, cursorPos }: { letters: string; current: string; cursorPos?: number }) {
+  const letterWidths = React.useRef<number[]>([]);
+
+  React.useEffect(() => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (context) {
+      context.font = '36px Arial';
+      letterWidths.current = letters.split("").map(char => context.measureText(char).width);
+    }
+  }, [letters]);
+
   return (
-    <div className="flex p-3">
+    <div className="flex p-3 relative">
       {letters.split("").map((char, index) => (
         <React.Fragment key={index}>
           {cursorPos !== undefined && cursorPos === index && (
-            <span className='cursor'>|</span>
+            <Cursor cursorPos={cursorPos} letterWidths={letterWidths} />
           )}
           <span key={index} className={`px-0.5 text-4xl ${index < current.length ? char === current[index] ? "correct" : "incorrect" : ""}`}>
             {char}
@@ -17,7 +43,7 @@ function Letter({ letters, current, cursorPos }: { letters: string; current: str
         </React.Fragment>
       ))}
       {cursorPos !== undefined && cursorPos === letters.length && (
-        <span className='cursor'>|</span>
+        <Cursor cursorPos={cursorPos} letterWidths={letterWidths} />
       )}
     </div>
   );
@@ -30,7 +56,6 @@ export default function Words({ words }: { words: string[] }) {
   const [spacebarCount, setSpacebarCount] = useState<number>(0);
   const [subWordList, setSubWordList] = useState<string[]>([])
 
-
   if (subWordList.length == 0) {
     for (let i = 0; i < 50; i++) {
       const random = Math.floor(Math.random() * words.length)
@@ -38,7 +63,6 @@ export default function Words({ words }: { words: string[] }) {
     }
   }
 
-  console.log(subWordList.length)
   const resetTest = () => {
     setTypedKey('')
     setTypedWords([])
@@ -54,8 +78,8 @@ export default function Words({ words }: { words: string[] }) {
     setIndex(0)
   }
 
-  window.addEventListener('reset', () => {
-    resetTest()
+  window.addEventListener('storage', () => {
+    resetTest();
   })
 
   window.addEventListener('next', () => {
@@ -63,7 +87,6 @@ export default function Words({ words }: { words: string[] }) {
   })
 
   const handleKeyPress = (keyPress: string | null) => {
-
     if (sessionStorage.getItem('testActive') === 'false') {
       resetTest()
       sessionStorage.setItem('testActive', 'true')
@@ -71,20 +94,24 @@ export default function Words({ words }: { words: string[] }) {
 
     if (keyPress === "Backspace") {
       setTypedKey((prev) => prev.substring(0, prev.length - 1))
-    }
-    else if (keyPress === " ") {
+    } else if (keyPress === " ") {
       if (currentIndex < subWordList.length - 1) {
         setTypedWords(prev => [...prev, typedKey])
         setIndex((prev) => prev + 1)
       }
-      setSpacebarCount((prev) => prev + 1)
+
+      if (typedKey == subWordList[currentIndex]) {
+        setSpacebarCount((prev) => prev + 1)
+        localStorage.setItem('correctSpaces', String(spacebarCount))
+      }
+
       setTypedKey("")
     } else {
       setTypedKey((prev) => prev + keyPress)
     }
-
-    
   }
+
+
 
   return (
     <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip">
@@ -106,5 +133,4 @@ export default function Words({ words }: { words: string[] }) {
       }
     </div>
   )
-
 }
