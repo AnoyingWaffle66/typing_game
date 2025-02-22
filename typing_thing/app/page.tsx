@@ -17,9 +17,6 @@ export default function Home() {
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
 
-  // reset time
-  // clear typed words
-  // render same words again
   const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {

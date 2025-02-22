@@ -19,6 +19,22 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
 
 function Letter({ letters, current, cursorPos }: { letters: string; current: string; cursorPos?: number }) {
   const letterWidths = React.useRef<number[]>([]);
+  let accuracy = 0
+  let correctCount = 0
+  let incorrectCount = 0
+
+  letters.split("").map((char, index) => {
+    if (index < current.length){
+      if (char === current[index]){
+        correctCount++
+      } else {
+        incorrectCount++
+      }
+    }
+  })
+  accuracy = (correctCount / (correctCount + incorrectCount)) * 100
+  localStorage.setItem('accuracy', String(accuracy))
+  
 
   React.useEffect(() => {
     const canvas = document.createElement('canvas');
