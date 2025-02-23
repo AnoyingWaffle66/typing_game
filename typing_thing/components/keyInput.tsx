@@ -13,7 +13,7 @@ const keys: string[] = [
 // Props, parameters to pass in
 interface KeyProps {
   // The current pressed key is passed here to be used elsewhere/ does function stuff. Callback function
-  onPress: (pressedKey: string | null) => void;
+  onPress: (pressedKey: string) => void;
 }
 
 // Handles the input capture
