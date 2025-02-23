@@ -50,11 +50,14 @@ function Letter({ letters, current, cursorPos }: { letters: string; current: str
 }
 
 export default function Words({ words }: { words: string[] }) {
+  const [key, setKeyPress] = useState<string>()
   const [typedWords, setTypedWords] = useState<string[]>([])
   const [currentIndex, setIndex] = useState<number>(0)
   const [typedKey, setTypedKey] = useState<string>('');
   const [spacebarCount, setSpacebarCount] = useState<number>(0);
   const [subWordList, setSubWordList] = useState<string[]>([])
+  const [correctCount, setCorrect] = useState<number>(0)
+  const [incorrectCount, setIncorrect] = useState<number>(0)
 
   if (subWordList.length == 0) {
     for (let i = 0; i < 50; i++) {
@@ -68,14 +71,14 @@ export default function Words({ words }: { words: string[] }) {
     setTypedWords([])
     setSpacebarCount(0)
     setIndex(0)
+    setCorrect(0)
+    setIncorrect(0)
+    sessionStorage.setItem('accuracy', '100')
   }
 
   const newTest = () => {
     setSubWordList([])
-    setTypedKey('')
-    setTypedWords([])
-    setSpacebarCount(0)
-    setIndex(0)
+    resetTest()
   }
 
   window.addEventListener('reset', () => {
@@ -86,7 +89,8 @@ export default function Words({ words }: { words: string[] }) {
     newTest()
   })
 
-  const handleKeyPress = (keyPress: string | null) => {
+  const handleKeyPress = (keyPress: string) => {
+    setKeyPress(keyPress)
     if (sessionStorage.getItem('testActive') === 'false') {
       resetTest()
       sessionStorage.setItem('testActive', 'true')
@@ -103,15 +107,44 @@ export default function Words({ words }: { words: string[] }) {
       if (typedKey == subWordList[currentIndex]) {
         setSpacebarCount((prev) => prev + 1)
         localStorage.setItem('correctSpaces', String(spacebarCount))
+      } else {
+        let currentWord = subWordList[currentIndex]
+        let missedLetters = 0
+        missedLetters = currentWord.length - (typedKey?.length ?? 0);
+        setIncorrect(prev => prev + missedLetters)
       }
 
       setTypedKey("")
     } else {
       setTypedKey((prev) => prev + keyPress)
+
     }
   }
 
+  //detects key stroke accuracy
+  React.useEffect(() => {
+    const current = subWordList[currentIndex]
+    console.log("Key Press: " + key)
+    console.log("typed key length-1: " + current[typedKey.length - 1])
 
+    if (key != undefined && current[typedKey.length - 1] != undefined && key != "Backspace") {
+      if (key === current[typedKey.length - 1]) {
+        setCorrect(prev => prev + 1)
+        console.log("correct Input!")
+      } else {
+        setIncorrect(prev => prev + 1)
+        console.log("incorrect!")
+      }
+    }
+  }, [typedKey])
+
+  //accuracy update
+  React.useEffect(() => {
+    if (correctCount != 0 || incorrectCount != 0){
+      let acc = Math.floor((correctCount / (correctCount + incorrectCount)) * 100)
+      sessionStorage.setItem('accuracy', String(acc))
+    }
+  }, [correctCount, incorrectCount])
 
   return (
     <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip">

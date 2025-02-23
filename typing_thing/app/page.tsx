@@ -14,12 +14,10 @@ const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
 
 export default function Home() {
   sessionStorage.setItem('testActive', 'false')
+  sessionStorage.setItem('accuracy', '100')
   const [openSettings, openSettingsClicked] = useState(false)
   const [inputText, setInputText] = useState('')
 
-  // reset time
-  // clear typed words
-  // render same words again
   const [wordList, setWordList] = useState<string[]>([])
 
   const handleClick = () => {
