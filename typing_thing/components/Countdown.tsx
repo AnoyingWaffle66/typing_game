@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 // TO-DO (Make it run on an event instead of right away)
 
@@ -20,7 +20,7 @@ function Countdown() {
 
     // For Handling Keyboard Input
     useEffect(() => {
-        const handleKeyPress = (event : KeyboardEvent) => {
+        const handleKeyPress = (event: KeyboardEvent) => {
 
             // Sets Active
             if (!isActive) {
@@ -46,11 +46,11 @@ function Countdown() {
         }
 
         if (count < 60) {
-        const intervalId = setInterval(() => {
-            setCount(prevCount => prevCount + 1);
-        }, 1000);
-        return () => clearInterval(intervalId);
-    } 
+            const intervalId = setInterval(() => {
+                setCount(prevCount => prevCount + 1);
+            }, 1000);
+            return () => clearInterval(intervalId);
+        }
     }, [isActive]);
 
     useEffect(() => {
@@ -66,8 +66,12 @@ function Countdown() {
 
     return (
         <div>
-            <h1>WPM: {count <= 0 ? "Start typing" : Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h1>
-            <progress style={{width: '95vw', margin: '2%'}} value={smoothCount / 12000}/>
+            <div className='flex justify-center space-x-5'>
+                <h1>WPM: {count <= 0 ? "Start typing" : Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h1>
+                <h1>Accuracy: {sessionStorage.getItem('accuracy')}%</h1>
+            </div>
+
+            <progress style={{ width: '95vw', margin: '2%' }} value={smoothCount / 12000} />
         </div>
     );
 }

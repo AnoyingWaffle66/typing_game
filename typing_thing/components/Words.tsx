@@ -107,6 +107,11 @@ export default function Words({ words }: { words: string[] }) {
       if (typedKey == subWordList[currentIndex]) {
         setSpacebarCount((prev) => prev + 1)
         localStorage.setItem('correctSpaces', String(spacebarCount))
+      } else {
+        let currentWord = subWordList[currentIndex]
+        let missedLetters = 0
+        missedLetters = currentWord.length - (typedKey?.length ?? 0);
+        setIncorrect(prev => prev + missedLetters)
       }
 
       setTypedKey("")
@@ -135,7 +140,7 @@ export default function Words({ words }: { words: string[] }) {
 
   //accuracy update
   React.useEffect(() => {
-    if (correctCount != 0){
+    if (correctCount != 0 || incorrectCount != 0){
       let acc = Math.floor((correctCount / (correctCount + incorrectCount)) * 100)
       sessionStorage.setItem('accuracy', String(acc))
     }
