@@ -26,9 +26,6 @@ function Countdown() {
             if (!isActive) {
                 setIsActive(true);
             }
-            // if (event.key == ' ' && count < 60) {
-            //     setWordCount(prevWordCount => prevWordCount + 1);
-            // }
         };
 
         window.addEventListener("keydown", handleKeyPress);
