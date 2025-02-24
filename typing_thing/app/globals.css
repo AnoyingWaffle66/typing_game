@@ -15,6 +15,10 @@
     --background: #323437;
     --foreground: #ededed;
   }
+  
+  img {
+    filter: invert(1);
+  }
 }
 
 body {
@@ -62,7 +66,7 @@ progress::-moz-progress-bar {
 .modal {
   z-index: 1;
   position: fixed;
-  padding-top: 100px;
+  padding-top: 50px;
   left: 0;
   top: 0;
   width: 100%;
