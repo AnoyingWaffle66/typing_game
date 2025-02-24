@@ -124,13 +124,10 @@ progress::-moz-progress-bar {
 }
 
 .button:active {
-<<<<<<< HEAD
   background-color: gray;
-=======
   opacity: 1;
 }
 
 .word {
   opacity: 1;
->>>>>>> 599059c (temp commit)
 }
