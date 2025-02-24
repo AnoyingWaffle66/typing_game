@@ -23,6 +23,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+h1 {
+  text-align: center;
+  font-size: xx-large;
+  padding: 10px;
+}
+
+h2 {
+  text-align: center;
+  font-size: x-large
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
 progress {
   background-color: var(--background)
 }
@@ -62,6 +83,10 @@ progress::-moz-progress-bar {
 
 .correct {
   color: var(--correct);
+}
+
+.grayify {
+  background-color: gray;
 }
 
 .cursor {

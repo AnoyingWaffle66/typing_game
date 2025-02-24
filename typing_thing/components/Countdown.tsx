@@ -67,10 +67,9 @@ function Countdown() {
     return (
         <div>
             <div className='flex justify-center space-x-5'>
-                <h1>WPM: {count <= 0 ? "Start typing" : Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h1>
-                <h1>Accuracy: {sessionStorage.getItem('accuracy')}%</h1>
+                <h2>WPM: {count <= 0 ? "Start typing" : Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h2>
+                <h2>Accuracy: {sessionStorage.getItem('accuracy')}%</h2>
             </div>
-
             <progress style={{ width: '95vw', margin: '2%' }} value={smoothCount / 12000} />
         </div>
     );

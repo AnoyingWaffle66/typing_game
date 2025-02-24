@@ -10,6 +10,7 @@ import { json } from "stream/consumers";
 import LeaderboardPopup from "@/components/leaderboardPopup";
 
 const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
+const LEADERBOARD_API = 'http://127.0.0.1:3000/api/leaderboard'
 
 export default function Home() {
   sessionStorage.setItem('testActive', 'false')
@@ -65,7 +66,7 @@ export default function Home() {
         openLeaderboard && (
           <div className='modal' onClick={handleModalClick}>
             <div className='modal-box'>
-              <LeaderboardPopup/>
+              <LeaderboardPopup api={LEADERBOARD_API}/>
             </div>
           </div>
         )
