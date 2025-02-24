@@ -56,6 +56,10 @@ progress::-moz-progress-bar {
   background-color: var(--accent) !important;
 }
 
+.spacer {
+  margin: 15px;
+}
+
 .modal {
   z-index: 1;
   position: fixed;

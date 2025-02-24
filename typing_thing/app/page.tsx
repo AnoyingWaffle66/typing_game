@@ -95,8 +95,8 @@ export default function Home() {
             <p>Loading...</p>
           )}
         </div>
-        <div className="absolute top-2/3 left-1/2 transform -translate-x-1/2 flex gap-10 justify-center">
-          <RepeatButton />
+        <div className="h-page flex text-center justify-center">
+          <RepeatButton/>
           <NextButton/>
         </div>
       </div>

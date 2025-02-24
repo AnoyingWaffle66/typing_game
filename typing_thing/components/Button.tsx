@@ -49,7 +49,7 @@ export function RepeatButton() {
 
     return (
         <>
-            <button className="rounded-3xl p-2 hover:bg-gray-300 active:bg-gray-400 transition" onClick={onRepeat} id="repeat">
+            <button className="spacer rounded-3xl p-2 hover:bg-gray-300 active:bg-gray-400 transition" onClick={onRepeat} id="repeat">
                 <img src="./repeatIcon.png" width={45} />
             </button>
         </>
@@ -68,7 +68,7 @@ export function NextButton() {
     }
     return (
         <>
-            <button className="rounded-3xl p-2 hover:bg-gray-300 active:bg-gray-400 transition" onClick={onNext} id="next">
+            <button className="spacer rounded-3xl p-2 hover:bg-gray-300 active:bg-gray-400 transition" onClick={onNext} id="next">
                 {/* Next */}
                 <img src="./arrow.png" width={40} />
 

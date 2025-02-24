@@ -42,7 +42,7 @@ function LeaderboardPopup({api}: { api: string }) {
                 <tbody>
                     {leaderboard.map((score, index) => {
                         return (
-                            <tr key={index} className={`${index % 2 == 0 ? "grayify" : ""}`}>
+                            <tr key={"score" + index} className={`${index % 2 == 0 ? "grayify" : ""}`}>
                                 <td>{index + 1}</td>
                                 <td>{score.name}</td>
                                 <td>{score.wpm}</td>
