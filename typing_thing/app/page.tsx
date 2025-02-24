@@ -3,7 +3,7 @@ import Button from "@/components/Button"
 import React, { useState, useEffect, MouseEventHandler } from "react";
 
 import { SettingsButton, LeaderboardButton, RepeatButton, NextButton } from "@/components/Button";
-import SettingsBar from "@/components/settingsBar";
+import SettingsPopup from "@/components/settingsPopup";
 import Words from "@/components/Words"
 import Countdown from "@/components/Countdown"
 import { json } from "stream/consumers";
@@ -32,6 +32,7 @@ export default function Home() {
   const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       openLeaderboardClicked(false);
+      openSettingsClicked(false)
     }
   }
 
@@ -73,8 +74,10 @@ export default function Home() {
       }
       {
         openSettings && (
-          <div className="absolute pt-7 pl-3 w-screen bg-gray-600">
-            <SettingsBar setText={handleSetText} initialText={inputText}/>
+          <div className='modal' onClick={handleModalClick}>
+            <div className='modal-box'>
+              <SettingsPopup setText={handleSetText} initialText={inputText}/>
+            </div>
           </div>
         )
       }
