@@ -38,6 +38,7 @@ export default function Home() {
 
   useEffect(() => {
     localStorage.setItem('correctSpaces', "0")
+    localStorage.setItem('newLines', "0")
     const savedText = localStorage.getItem('inputText')
     if (savedText) {
       setInputText(savedText)

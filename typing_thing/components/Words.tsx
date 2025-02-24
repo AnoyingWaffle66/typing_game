@@ -5,30 +5,42 @@ import React from 'react'
 import { stringify } from 'querystring';
 
 function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>; }) {
-  return (
-    <div
-      className='cursor'
-      style={{
-        position: 'absolute',
-        left: `${(letterWidths.current.slice(0, cursorPos).reduce((a, b) => a + b + 4, 0)) + 10}px`,
-        top: '5',
-      }}
-    ></div>
-  )
+
+    return (
+        <div
+            className='cursor'
+            style={{
+                position: 'absolute',
+                left: `${(letterWidths.current.slice(0, cursorPos).reduce((a, b) => a + b + 4, 0)) + 10}px`,
+                top: '5',
+            }}
+            ref={el => {
+                if (!el) return
+                let thing = el.getBoundingClientRect().y
+                let thing2 = Number(localStorage.getItem('previousCursorPosition'))
+                if (thing != thing2 && localStorage.getItem('newLines') != '0') {
+                    console.log("something")
+                    localStorage.setItem('newLines', '0')
+                } else if (thing != thing2) {
+                    localStorage.setItem('newLines', "1")
+                }
+                localStorage.setItem('previousCursorPosition', thing.toString())
+            }}></div>
+    )
 }
 
 function Letter({ letters, current, cursorPos }: { letters: string; current: string; cursorPos?: number }) {
-  const letterWidths = React.useRef<number[]>([]);
+    const letterWidths = React.useRef<number[]>([]);
 
-  React.useEffect(() => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    React.useEffect(() => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
 
-    if (context) {
-      context.font = '36px Arial';
-      letterWidths.current = letters.split("").map(char => context.measureText(char).width);
-    }
-  }, [letters]);
+        if (context) {
+            context.font = '36px Arial';
+            letterWidths.current = letters.split("").map(char => context.measureText(char).width);
+        }
+    }, [letters]);
 
   return (
     <div className="flex p-3 relative">
