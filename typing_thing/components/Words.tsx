@@ -2,21 +2,25 @@
 import { useState, useRef, useEffect } from 'react'
 import KeyInput from './keyInput'
 import React from 'react'
-import { stringify } from 'querystring';
 
-function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>; }) {
+function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>}) {
     const [position, setPosition] = useState(0)
 
     const removePreviousWords = (pos: number) => {
         let divsToRemove = []
+        let removing = false
         document.querySelectorAll('div.word').forEach((div, idx) => {
             if (div.getBoundingClientRect().y + 12.5 < pos) {
+                removing = true
                 divsToRemove[idx] = div
+                localStorage.setItem('wordsToRemove', String(divsToRemove.length))
             }
         })
-        divsToRemove.forEach((div) => {
-            div.remove()
-        })
+        if(removing){
+            divsToRemove.forEach((div, idx) => {
+                div.remove()
+            })
+        } 
     }
 
     return (
@@ -40,20 +44,6 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
                     setPosition(currentY)
                     removePreviousWords(currentY)
                 }
-                // } else if (currentY > position) {
-                //     setPosition(currentY)
-                // }
-                // console.log(thing)
-                // let thing2 = localStorage.getItem('previousCursorPosition')
-                // console.log(thing2)
-                // localStorage.setItem('previousCursorPosition', thing)
-                // console.log(localStorage.getItem('previousCursorPosition'))
-                // if (thing != thing2) {
-                //     console.log("something")
-                //     localStorage.setItem('newLines', "1")
-                // } else if (localStorage.getItem('newLines') != '0') {
-                //     console.log("hello there")
-                // }
             }}>
         </div>
     )
@@ -100,13 +90,21 @@ export default function Words({ words }: { words: string[] }) {
     const [subWordList, setSubWordList] = useState<string[]>([])
     const [correctCount, setCorrect] = useState<number>(0)
     const [incorrectCount, setIncorrect] = useState<number>(0)
-    const [cursorHeights, setHeights] = useState<number[]>([])
 
-    if (subWordList.length == 0) {
-        for (let i = 0; i < 50; i++) {
+    if (subWordList.length <= 30) {
+        for (let i = subWordList.length; i < 50; i++) {
             const random = Math.floor(Math.random() * words.length)
             subWordList.push(words[random])
         }
+    }
+
+    const addToList = () => {
+        const amount = Number(localStorage.getItem('wordsToRemove'))
+        for (let i = 0; i < amount; i++){
+            const random = Math.floor(Math.random() * words.length)
+            subWordList.push(words[random])
+        }
+        localStorage.setItem("wordsToRemove", "0")
     }
 
     const resetTest = () => {
@@ -189,6 +187,8 @@ export default function Words({ words }: { words: string[] }) {
             sessionStorage.setItem('accuracy', String(acc))
         }
     }, [correctCount, incorrectCount])
+
+    addToList()
 
     return (
         <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip">
