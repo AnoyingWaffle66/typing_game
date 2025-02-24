@@ -6,6 +6,12 @@ import { stringify } from 'querystring';
 
 function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>; }) {
 
+    const removePreviousWords = () => {
+        // document.querySelectorAll('div.word').forEach(div => {
+            // div.remove()
+        // })
+    }
+
     return (
         <div
             className='cursor'
@@ -15,15 +21,16 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
                 top: '5',
             }}
             ref={el => {
-                if (!el) return
-                let thing = el.getBoundingClientRect().y
-                let thing2 = Number(localStorage.getItem('previousCursorPosition'))
-                if (thing != thing2 && localStorage.getItem('newLines') != '0') {
-                    console.log("something")
-                } else if (thing != thing2) {
-                    localStorage.setItem('newLines', "1")
-                }
-                localStorage.setItem('previousCursorPosition', thing.toString())
+                // if (!el) return
+                // let thing = el.getBoundingClientRect().y
+                // let thing2 = Number(localStorage.getItem('previousCursorPosition'))
+                // if (thing != thing2 && localStorage.getItem('newLines') != '0') {
+                //     console.log("something")
+                //     removePreviousWords()
+                // } else if (thing != thing2) {
+                //     localStorage.setItem('newLines', "1")
+                // }
+                // localStorage.setItem('previousCursorPosition', thing.toString())
             }}>
         </div>
     )
