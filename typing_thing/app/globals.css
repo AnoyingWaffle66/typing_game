@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #ededed;
   --foreground: #171717;
+  --correct: gray;
+  --incorrect: #ff4754;
+  --accent: #4b42ff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #323437;
     --foreground: #ededed;
   }
 }
@@ -20,17 +23,50 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+progress {
+  background-color: var(--background)
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--accent) !important;
+}
+
+progress::-moz-progress-bar {
+  background-color: var(--accent) !important;
+}
+
+.modal {
+  z-index: 1;
+  position: fixed;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-box {
+  z-index: 2;
+  background-color: var(--background);
+  margin: 15% auto;
+  padding: 20px;
+  border: 2px solid gray;
+  width: 80%;
+}
+
 .incorrect {
-  color: red;
+  color: var(--incorrect);
 }
 
 .correct {
-  color: darkslategrey;
+  color: var(--correct);
 }
 
 .cursor {
   animation: blink 1s step-end infinite;
-  background-color: blueviolet;
+  background-color: var(--accent);
   border-radius: 2px;
   width: 4px;
   height: 42px;
@@ -42,8 +78,8 @@ body {
 }
 
 .button {
-  background-color: black;
-  border-color: darkgrey;
+  background-color: var(--foreground);
+  color: var(--background);
   border-radius: 20px;
   opacity: 1;
   justify-content: center;

@@ -6,7 +6,7 @@ import { useState } from "react"
 const SettingsBar = ({setText, initialText}: {setText:Function, initialText:string}) => {
     const [username, setUsername] = useState(initialText || 'LATITDCTNITS')
     
-    const onChange = (event) => {
+    const onChange = (event: any) => {
         setUsername(event.target.value)
         setText(event.target.value)
     }

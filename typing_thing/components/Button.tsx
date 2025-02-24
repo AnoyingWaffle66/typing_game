@@ -26,6 +26,17 @@ export function SettingsButton() {
         </>
     )
 }
+
+export function LeaderboardButton(){
+    return(
+        <>
+            <button>
+                <img src="./trophyIcon.png" width={40}></img>
+            </button>
+        </>
+    )
+}
+
 export function RepeatButton() {
     const focus = document.getElementById("repeat")
     const onRepeat = () => {
