@@ -1,29 +1,41 @@
 "use client"
 import Button from "@/components/Button"
-import "@/styles/global.css"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEventHandler } from "react";
 
-import { SettingsButton, RepeatButton, NextButton } from "@/components/Button";
-import SettingsBar from "@/components/settingsBar";
+import { SettingsButton, LeaderboardButton, RepeatButton, NextButton } from "@/components/Button";
+import SettingsPopup from "@/components/settingsPopup";
 import Words from "@/components/Words"
 import Countdown from "@/components/Countdown"
-import LeaderboardButton from "@/components/Leaderboard-Button";
 import { json } from "stream/consumers";
+import LeaderboardPopup from "@/components/leaderboardPopup";
 
 const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
+const LEADERBOARD_API = 'http://127.0.0.1:3000/api/leaderboard'
 
 export default function Home() {
   sessionStorage.setItem('testActive', 'false')
   sessionStorage.setItem('accuracy', '100')
   const [openSettings, openSettingsClicked] = useState(false)
+  const [openLeaderboard, openLeaderboardClicked] = useState(false)
   const [inputText, setInputText] = useState('')
 
   const [wordList, setWordList] = useState<string[]>([])
 
-  const handleClick = () => {
+  const handleSettingsClick = () => {
     openSettingsClicked(prev => !prev)
   }
-  
+
+  const handleLeaderboardClick = (event: any) => {
+    openLeaderboardClicked(prev => !prev)
+  }
+
+  const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      openLeaderboardClicked(false);
+      openSettingsClicked(false)
+    }
+  }
+
   useEffect(() => {
     localStorage.setItem('correctSpaces', "0")
     const savedText = localStorage.getItem('inputText')
@@ -52,29 +64,42 @@ export default function Home() {
   return (
     <>
       {
-        openSettings && (
-          <div className="absolute pt-7 pl-3 w-screen bg-gray-600">
-            <SettingsBar setText={handleSetText} initialText={inputText} />
+        openLeaderboard && (
+          <div className='modal' onClick={handleModalClick}>
+            <div className='modal-box'>
+              <LeaderboardPopup api={LEADERBOARD_API}/>
+            </div>
           </div>
         )
       }
-      <div className="absolute right-8 top-8" onClick={handleClick}>
-        <SettingsButton />
+      {
+        openSettings && (
+          <div className='modal' onClick={handleModalClick}>
+            <div className='modal-box'>
+              <SettingsPopup setText={handleSetText} initialText={inputText}/>
+            </div>
+          </div>
+        )
+      }
+      <div className="absolute right-24 top-8" onClick={handleLeaderboardClick}>
+        <LeaderboardButton/>
+      </div>
+      <div className="absolute right-8 top-8" onClick={handleSettingsClick}>
+        <SettingsButton/>
       </div>
       <div>
       <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
           <Countdown/>
         </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
-          { wordList.length > 0 ? (
+          {wordList.length > 0 ? (
             <Words words={wordList}/>
           ) : (
             <p>Loading...</p>
           )}
-          <LeaderboardButton/>
         </div>
-        <div className="absolute top-2/3 left-1/2 transform -translate-x-1/2 flex gap-10 justify-center">
-          <RepeatButton />
+        <div className="h-page flex text-center justify-center">
+          <RepeatButton/>
           <NextButton/>
         </div>
       </div>

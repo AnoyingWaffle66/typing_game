@@ -131,3 +131,5 @@ dist
 
 # storage stuffs
 typing_thing/storage
+
+.vscode/
