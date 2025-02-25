@@ -16,7 +16,7 @@ const SettingsPopup = ({setText, initialText}: {setText:Function, initialText:st
             <h1>Settings</h1>
             <div className="h-20 items-center">
                 <h2 className="spacer">Username</h2>
-                <input onChange={onChange} value={username} placeholder={"username"} className="ml-5 text-white text-center bg-gray-600 border"/>
+                <input onChange={onChange} value={username} placeholder={"username"} className="ml-5 text-white text-center bg-gray-500 border"/>
             </div>
         </>
     )

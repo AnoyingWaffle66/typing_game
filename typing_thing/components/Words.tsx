@@ -8,7 +8,7 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
     const [position, setPosition] = useState(0)
 
     const removePreviousWords = (pos: number) => {
-        let divsToRemove = []
+        let divsToRemove: any[] = []
         let removing = false
         document.querySelectorAll('div.word').forEach((div, idx) => {
             if (div.getBoundingClientRect().y + 12.5 < pos) {
@@ -196,13 +196,13 @@ export default function Words({ words }: { words: string[] }) {
         }
     }, [typedKey])
 
-    //accuracy update
-    React.useEffect(() => {
-        if (correctCount != 0 || incorrectCount != 0) {
-            let acc = Math.floor((correctCount / (correctCount + incorrectCount)) * 100)
-            sessionStorage.setItem('accuracy', String(acc))
-        }
-    }, [correctCount, incorrectCount])
+  //accuracy update
+  React.useEffect(() => {
+    if (correctCount != 0 || incorrectCount != 0){
+      let acc = Math.floor((correctCount / (correctCount + incorrectCount)) * 100)
+      sessionStorage.setItem('accuracy', String(acc))
+    }
+  }, [correctCount, incorrectCount])
 
     addToList()
 
@@ -214,7 +214,6 @@ export default function Words({ words }: { words: string[] }) {
                 subWordList.map((word, wordIndex) => {
                     const current = wordIndex < currentIndex ? typedWords[wordIndex]
                         : wordIndex === currentIndex ? typedKey : "";
-
                     return (
                         <div key={wordIndex} className="flex word">
                             <Letter letters={word} current={current} cursorPos={wordIndex === currentIndex ? typedKey.length : undefined} />
