@@ -3,21 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --background: #ededed;
-  --foreground: #171717;
+  --background: #323437;
+  --foreground: #ededed;
   --correct: gray;
   --incorrect: #ff4754;
   --accent: #4b42ff;
-}
+  --imgfilter: invert(1);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #323437;
-    --foreground: #ededed;
-  }
-  
   img {
-    filter: invert(1);
+    filter: var(--imgfilter);
   }
 }
 
