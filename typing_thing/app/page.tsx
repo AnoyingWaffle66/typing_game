@@ -143,7 +143,7 @@ export default function Home() {
         openResults && (
           <div className='modal' onClick={handleModalClick}>
             <div className='modal-box'>
-              <p>test</p>
+              <ResultsPopup wpm={0} accuracy={0} combo={0} score={0}/>
             </div>
           </div>
         )
