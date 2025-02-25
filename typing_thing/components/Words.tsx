@@ -78,7 +78,7 @@ export default function Words({ words }: { words: string[] }) {
     setIncorrect(0)
     setCombo(0)
     setTestEnded(false)
-    localStorage.setItem('testOver', 'false')
+    localStorage.setItem('testActive', 'false')
     sessionStorage.setItem('accuracy', '100')
   }
 
@@ -96,13 +96,16 @@ export default function Words({ words }: { words: string[] }) {
   })
 
   window.addEventListener('testOver', () => {
-    if (localStorage.getItem('testEnded') == 'true'){
+    if (localStorage.getItem('testActive') == 'false'){
       setTestEnded(true)
     }
   })
 
   const handleKeyPress = (keyPress: string) => {
     setKeyPress(keyPress)
+    if (testEnded){
+      return
+    }
     if (sessionStorage.getItem('testActive') === 'false') {
       resetTest()
       sessionStorage.setItem('testActive', 'true')

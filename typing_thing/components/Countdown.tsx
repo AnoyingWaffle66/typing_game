@@ -79,7 +79,7 @@ function Countdown() {
     useEffect(() => {
         if (count >= 10) {
             window.dispatchEvent(new Event('testOver'))
-            localStorage.setItem('testEnded', 'true')
+            localStorage.setItem('testActive', 'False')
         }
     }, [count])
 
