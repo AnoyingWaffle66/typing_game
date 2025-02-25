@@ -93,6 +93,7 @@ export default function Words({ words }: { words: string[] }) {
     const [incorrectCount, setIncorrect] = useState<number>(0)
     const [combo, setCombo] = useState<number>(0)
     const [testEnded, setTestEnded] = useState<boolean>(false)
+    const [resetCounter, setResetCounter] = useState(0);
 
     if (subWordList.length <= 30) {
         for (let i = subWordList.length; i < 50; i++) {
@@ -119,6 +120,7 @@ export default function Words({ words }: { words: string[] }) {
         setIncorrect(0)
         setCombo(0)
         setTestEnded(false)
+        setResetCounter(prev => prev + 1)
         localStorage.setItem('testActive', 'false')
         sessionStorage.setItem('accuracy', '100')
     }
@@ -127,7 +129,6 @@ export default function Words({ words }: { words: string[] }) {
         setSubWordList([])
         resetTest()
     }
-
     window.addEventListener('reset', () => {
         resetTest();
     })
@@ -201,7 +202,7 @@ export default function Words({ words }: { words: string[] }) {
     addToList()
 
     return (
-        <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip">
+        <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip" key={resetCounter}>
             <KeyInput onPress={handleKeyPress} />
             <FinalScore combo={combo} wpm={Number.parseInt(String(localStorage.getItem('wpm')))} testEnded={testEnded} />
             {
