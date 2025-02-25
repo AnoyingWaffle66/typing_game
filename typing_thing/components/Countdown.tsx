@@ -9,11 +9,21 @@ function Countdown() {
     const [count, setCount] = useState(0);
     const [smoothCount, setSmoothCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
+    const [wpm, setWpm] = useState(0)
+
+    useEffect(() => {
+        setWpm(Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60)))
+        localStorage.setItem('wpm', String(wpm))
+        console.log("Timer elapsed: " + count)
+    }, [count])
+
 
     const resetTimer = () => {
         setCount(0)
         setIsActive(false)
         setSmoothCount(0)
+        setWpm(0)
+        localStorage.setItem('wpm', '0')
     }
     window.addEventListener('reset', resetTimer)
     window.addEventListener('next', resetTimer)
@@ -62,12 +72,21 @@ function Countdown() {
             }, 5);
             return () => clearInterval(intervalId);
         }
+
     }, [isActive]);
+
+    // to let other components know if countdown is over
+    useEffect(() => {
+        if (count >= 10) {
+            window.dispatchEvent(new Event('testOver'))
+            localStorage.setItem('testEnded', 'true')
+        }
+    }, [count])
 
     return (
         <div>
             <div className='flex justify-center space-x-5'>
-                <h2>WPM: {count <= 0 ? "Start typing" : Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60))}</h2>
+                <h2>WPM: {count <= 0 ? "Start typing" : wpm}</h2>
                 <h2>Accuracy: {sessionStorage.getItem('accuracy')}%</h2>
             </div>
             <progress style={{ width: '95vw', margin: '2%' }} value={smoothCount / 12000} />
