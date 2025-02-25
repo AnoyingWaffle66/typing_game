@@ -37,6 +37,7 @@ export function LeaderboardButton(){
     )
 }
 
+
 export function RepeatButton() {
     const focus = document.getElementById("repeat")
     const onRepeat = () => {
