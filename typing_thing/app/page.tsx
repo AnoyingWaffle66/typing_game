@@ -22,10 +22,10 @@ export default function Home() {
   const [openResults, setOpenResults] = useState(false)
   const [inputText, setInputText] = useState('')
   const [wordList, setWordList] = useState<string[]>([])
-  const [wpm, setWPM] = useState('')
+  const [wpm, setWPM] = useState(0)
   const [accuracy, setAccurcy] = useState(0)
-  const [combo, setCombo] = useState('')
-  const [score, setScore] = useState('')
+  const [combo, setCombo] = useState(0)
+  const [score, setScore] = useState(0)
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
 
@@ -45,12 +45,40 @@ export default function Home() {
     }
   }
 
-  function setOpenResultsScored(wpm: string, accuracy: number, combo: string, score: string) {
+  function setOpenResultsScored(wpm: number, accuracy: number, combo: number) {
     setOpenResults(true)
     setWPM(wpm)
     setAccurcy(accuracy)
     setCombo(combo)
-    setScore(score)
+
+    let safeWpm = wpm || 1
+    let safeCombo = combo || 2
+    let safeAcc = accuracy || 1
+    let final = 0
+    let s = safeAcc * safeWpm * Math.log10(safeCombo)
+
+    if (s <= 0){
+        final = Math.floor(Math.pow(safeAcc, Math.log10(1)))
+    } else {
+        final = Math.floor(Math.pow(safeAcc, Math.log10(safeAcc)) * safeWpm * Math.log10(safeCombo))
+    }
+
+    setScore(final)
+
+    const _ = (async () => {
+      const json = {
+        "name": localStorage.getItem('inputText') || 'LATITDCTNITS',
+        "score": final,
+        "wpm": wpm,
+        "accuracy": accuracy,
+        "combo": combo
+      }
+
+      const response = await fetch(LEADERBOARD_API, {
+          method: 'POST',
+          body: JSON.stringify(json)
+      })
+  })()
   }
 
   useEffect(() => {
@@ -191,7 +219,7 @@ export default function Home() {
 
       <div>
       <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
-          <Countdown time={10} openResults={setOpenResultsScored}/>
+          <Countdown time={60} openResults={setOpenResultsScored}/>
         </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
           {wordList.length > 0 ? (

@@ -10,9 +10,23 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     if (req.method == 'POST') {
         var score: Score = JSON.parse(req.body);
-        scores.push(score)
 
-        writeScores(scores)
+        if (!scores.includes(score)) {
+            for (let i = 0; i < scores.length; i++) {
+                if (scores[i].name === score.name &&
+                    scores[i].score === score.score &&
+                    scores[i].wpm === score.wpm &&
+                    scores[i].accuracy === score.accuracy &&
+                    scores[i].combo == score.combo) {
+                        res.status(200).json({status:"ok"})
+                        return;
+                    }
+            }
+
+            scores.push(score)
+            writeScores(scores)
+        }
+
         res.status(200).json({status:"ok"})
         return
     }

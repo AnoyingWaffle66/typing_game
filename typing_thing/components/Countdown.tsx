@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const TICK_RATE = 20
 
-function Countdown({time, openResults}: {time: number, openResults: (wpm: string, accuracy: number, combo: string, score: string) => void}) {
+function Countdown({time, openResults}: {time: number, openResults: (wpm: number, accuracy: number, combo: number) => void}) {
     const [smoothCount, setSmoothCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [wpm, setWpm] = useState(0)
@@ -56,13 +56,12 @@ function Countdown({time, openResults}: {time: number, openResults: (wpm: string
                 setSmoothCount(prevSmoothCount => {
                     const newSmoothCount = prevSmoothCount + 1
 
-                    if (newSmoothCount >= time * TICK_RATE) {
+                    if (newSmoothCount >= time * TICK_RATE && isActive) {
                         setIsActive(false)
                         setTimeout(() => openResults(
-                            String(localStorage.getItem('wpm')),
+                            Number(localStorage.getItem('wpm')),
                             Number(sessionStorage.getItem('accuracy')),
-                            "//todo",
-                            "//todo"
+                            Number(sessionStorage.getItem('combo'))
                         ));
                     }
 
@@ -72,7 +71,7 @@ function Countdown({time, openResults}: {time: number, openResults: (wpm: string
 
             return () => clearInterval(intervalId);
         }
-    }, [isActive, time, TICK_RATE, openResults]);
+    }, [isActive, time]);
 
     // to let other components know if countdown is over
     // useEffect(() => {
