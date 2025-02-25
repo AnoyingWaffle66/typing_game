@@ -15,7 +15,7 @@ export default function Score({combo, wpm, testEnded} : {combo: number; wpm: num
 
                 final = Math.floor(Math.pow(safeAcc, Math.log10(1)))
             } else {
-                final = Math.floor(Math.pow(safeAcc, Math.log10(safeAcc * safeWpm * Math.log(safeCombo))))
+                final = Math.floor(Math.pow(safeAcc, Math.log10(safeAcc)) * safeWpm * Math.log(safeCombo))
             }
 
             setScore(final)
