@@ -23,8 +23,10 @@ export default function Score({combo, wpm, testEnded} : {combo: number; wpm: num
     }, [testEnded])
 
     useEffect(() => {
+        if (score === -1) return
         sessionStorage.setItem('finalScore', String(score))
         console.log("Final score: " + score)
+        window.alert("Final Score: " + score)
     }, [score])
     return null
 }

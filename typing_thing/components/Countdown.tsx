@@ -23,6 +23,7 @@ function Countdown() {
         setIsActive(false)
         setSmoothCount(0)
         setWpm(0)
+        sessionStorage.setItem('testAcive', 'false')
         localStorage.setItem('wpm', '0')
     }
     window.addEventListener('reset', resetTimer)
@@ -77,6 +78,7 @@ function Countdown() {
         if (count >= 60) {
             window.dispatchEvent(new Event('testOver'))
             localStorage.setItem('testActive', 'False')
+            console.log("test ended")
         }
     }, [count])
 
