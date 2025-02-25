@@ -129,7 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# storage stuffs
-typing_thing/storage
-
 .vscode/
