@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const TICK_RATE = 20
 
-function Countdown({time, openResults}: {time: number, openResults: (params: boolean) => void}) {
+function Countdown({time, openResults}: {time: number, openResults: (wpm: string, accuracy: number, combo: string, score: string) => void}) {
     const [smoothCount, setSmoothCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [wpm, setWpm] = useState(0)
@@ -17,7 +17,6 @@ function Countdown({time, openResults}: {time: number, openResults: (params: boo
 
 
     const resetTimer = () => {
-        openResults(false)
         setIsActive(false)
         setSmoothCount(0)
         setWpm(0)
@@ -59,7 +58,12 @@ function Countdown({time, openResults}: {time: number, openResults: (params: boo
 
                     if (newSmoothCount >= time * TICK_RATE) {
                         setIsActive(false)
-                        setTimeout(() => openResults(true), 0);
+                        setTimeout(() => openResults(
+                            String(localStorage.getItem('wpm')),
+                            Number(sessionStorage.getItem('accuracy')),
+                            "//todo",
+                            "//todo"
+                        ));
                     }
 
                     return newSmoothCount

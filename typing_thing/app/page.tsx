@@ -22,6 +22,10 @@ export default function Home() {
   const [openResults, setOpenResults] = useState(false)
   const [inputText, setInputText] = useState('')
   const [wordList, setWordList] = useState<string[]>([])
+  const [wpm, setWPM] = useState('')
+  const [accuracy, setAccurcy] = useState(0)
+  const [combo, setCombo] = useState('')
+  const [score, setScore] = useState('')
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
 
@@ -41,8 +45,12 @@ export default function Home() {
     }
   }
 
-  function setOpenResultsIndirect(state: boolean) {
-    setOpenResults(state)
+  function setOpenResultsScored(wpm: string, accuracy: number, combo: string, score: string) {
+    setOpenResults(true)
+    setWPM(wpm)
+    setAccurcy(accuracy)
+    setCombo(combo)
+    setScore(score)
   }
 
   useEffect(() => {
@@ -143,7 +151,7 @@ export default function Home() {
         openResults && (
           <div className='modal' onClick={handleModalClick}>
             <div className='modal-box'>
-              <ResultsPopup wpm={0} accuracy={0} combo={0} score={0}/>
+              <ResultsPopup wpm={wpm} accuracy={accuracy} combo={combo} score={score}/>
             </div>
           </div>
         )
@@ -183,7 +191,7 @@ export default function Home() {
 
       <div>
       <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
-          <Countdown time={10} openResults={setOpenResults}/>
+          <Countdown time={10} openResults={setOpenResultsScored}/>
         </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
           {wordList.length > 0 ? (

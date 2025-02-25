@@ -2,7 +2,7 @@
 
 import {useState} from 'react';
 
-function ResultsPopup({wpm, accuracy, combo, score}: {wpm: number, accuracy: number, combo: number, score: number}) {
+function ResultsPopup({wpm, accuracy, combo, score}: {wpm: string, accuracy: number, combo: string, score: string}) {
     return (
         <>
             <h1 className="text-5xl">Results</h1>
