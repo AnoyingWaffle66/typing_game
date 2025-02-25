@@ -1,5 +1,6 @@
 "use client"
-import React, { useState, useEffect, MouseEventHandler } from "react";
+import Button from "@/components/Button"
+import React, { useState, useEffect } from "react";
 
 import { SettingsButton, LeaderboardButton, RepeatButton, NextButton } from "@/components/Button";
 import SettingsPopup from "@/components/settingsPopup";
@@ -7,6 +8,7 @@ import Words from "@/components/Words"
 import Countdown from "@/components/Countdown"
 import { json } from "stream/consumers";
 import LeaderboardPopup from "@/components/leaderboardPopup";
+import ResultsPopup from "@/components/resultsPopup"
 
 const WORDLIST_API = 'http://127.0.0.1:3000/api/wordlist'
 const LEADERBOARD_API = 'http://127.0.0.1:3000/api/leaderboard'
@@ -14,10 +16,16 @@ const LEADERBOARD_API = 'http://127.0.0.1:3000/api/leaderboard'
 export default function Home() {
   sessionStorage.setItem('testActive', 'false')
   sessionStorage.setItem('accuracy', '100')
+
   const [openSettings, openSettingsClicked] = useState(false)
   const [openLeaderboard, openLeaderboardClicked] = useState(false)
+  const [openResults, setOpenResults] = useState(false)
   const [inputText, setInputText] = useState('')
   const [wordList, setWordList] = useState<string[]>([])
+  const [wpm, setWPM] = useState(0)
+  const [accuracy, setAccurcy] = useState(0)
+  const [combo, setCombo] = useState(0)
+  const [score, setScore] = useState(0)
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
 
@@ -32,8 +40,45 @@ export default function Home() {
   const handleModalClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       openLeaderboardClicked(false);
-      openSettingsClicked(false);
+      openSettingsClicked(false)
+      setOpenResults(false)
     }
+  }
+
+  function setOpenResultsScored(wpm: number, accuracy: number, combo: number) {
+    setOpenResults(true)
+    setWPM(wpm)
+    setAccurcy(accuracy)
+    setCombo(combo)
+
+    let safeWpm = wpm || 1
+    let safeCombo = combo || 2
+    let safeAcc = accuracy || 1
+    let final = 0
+    let s = safeAcc * safeWpm * Math.log10(safeCombo)
+
+    if (s <= 0){
+        final = Math.floor(Math.pow(safeAcc, Math.log10(1)))
+    } else {
+        final = Math.floor(Math.pow(safeAcc, Math.log10(safeAcc)) * safeWpm * Math.log10(safeCombo))
+    }
+
+    setScore(final)
+
+    const _ = (async () => {
+      const json = {
+        "name": localStorage.getItem('inputText') || 'LATITDCTNITS',
+        "score": final,
+        "wpm": wpm,
+        "accuracy": accuracy,
+        "combo": combo
+      }
+
+      const response = await fetch(LEADERBOARD_API, {
+          method: 'POST',
+          body: JSON.stringify(json)
+      })
+  })()
   }
 
   useEffect(() => {
@@ -131,6 +176,15 @@ export default function Home() {
   return (
     <>
       {
+        openResults && (
+          <div className='modal' onClick={handleModalClick}>
+            <div className='modal-box'>
+              <ResultsPopup wpm={wpm} accuracy={accuracy} combo={combo} score={score}/>
+            </div>
+          </div>
+        )
+      }
+      {
         openLeaderboard && (
           <div className='modal' onClick={handleModalClick}>
             <div className='modal-box'>
@@ -165,7 +219,7 @@ export default function Home() {
 
       <div>
       <div className="h-page flex text-center justify-center pt-20 mt-20 mr-20 ml-10">
-          <Countdown/>
+          <Countdown time={60} openResults={setOpenResultsScored}/>
         </div>
         <div className="h-screen inline items-center justify-center pt-20 mt-10 mr-10 ml-10">
           {wordList.length > 0 ? (

@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 interface Score {
     name: string,
@@ -20,7 +20,7 @@ function LeaderboardPopup({api}: { api: string }) {
             })
 
             const scores: Score[] = await response.json()
-            scores.sort((first, second) => first.score - second.score)
+            scores.sort((first, second) => second.score - first.score)
 
             setLeaderboard(scores)
         })()
@@ -36,6 +36,7 @@ function LeaderboardPopup({api}: { api: string }) {
                         <th>name</th>
                         <th>wpm</th>
                         <th>accuracy</th>
+                        <th>combo</th>
                         <th>score</th>
                     </tr>
                 </thead>
@@ -47,6 +48,7 @@ function LeaderboardPopup({api}: { api: string }) {
                                 <td>{score.name}</td>
                                 <td>{score.wpm}</td>
                                 <td>{`${score.accuracy.toFixed(2)}%`}</td>
+                                <td>{score.combo}</td>
                                 <td>{score.score}</td>
                             </tr>
                         )

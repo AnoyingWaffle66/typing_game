@@ -1,99 +1,94 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-// TO-DO (Make it run on an event instead of right away)
+const TICK_RATE = 20
 
-function Countdown() {
-    // const [wordCount, setWordCount] = useState(0);
-    const [count, setCount] = useState(0);
+function Countdown({time, openResults}: {time: number, openResults: (wpm: number, accuracy: number, combo: number) => void}) {
     const [smoothCount, setSmoothCount] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [wpm, setWpm] = useState(0)
 
     useEffect(() => {
-        setWpm(Math.ceil(Number(localStorage.getItem('correctSpaces')) / (count / 60)))
+        setWpm(Math.ceil((Number(localStorage.getItem('correctSpaces')) * TICK_RATE) / (smoothCount / 60)))
         localStorage.setItem('wpm', String(wpm))
-        console.log("Timer elapsed: " + count)
-    }, [count])
+        console.log("Timer elapsed: " + smoothCount)
+    }, [smoothCount])
 
 
     const resetTimer = () => {
-        setCount(0)
         setIsActive(false)
         setSmoothCount(0)
         setWpm(0)
         sessionStorage.setItem('testAcive', 'false')
         localStorage.setItem('wpm', '0')
     }
-    window.addEventListener('reset', resetTimer)
-    window.addEventListener('next', resetTimer)
 
     const isInputFocused = () => {
         const activeElement = document.activeElement;
         return activeElement && (activeElement.tagName === 'INPUT');
       };
 
-    // For Handling Keyboard Input
     useEffect(() => {
-        const handleKeyPress = (event: KeyboardEvent) => {
-            if (isInputFocused()) return
-            // Sets Active
-            if (!isActive) {
-                setIsActive(true);
-            }
+        window.addEventListener('reset', resetTimer);
+        window.addEventListener('next', resetTimer);
+
+        return () => {
+            window.removeEventListener('reset', resetTimer);
+            window.removeEventListener('next', resetTimer);
         };
+    }, []);
+
+    useEffect(() => {
+        const handleKeyPress = (event: KeyboardEvent) => setIsActive(true);
 
         window.addEventListener("keydown", handleKeyPress);
 
         return () => window.removeEventListener("keydown", handleKeyPress);
     }, []);
 
-    // For Handling The Countdown
     useEffect(() => {
-        // Keeps returning until a key has been pressed.
-        if (!isActive) return;
+        if (!isActive)
+            return;
 
-        if (count >= 60 && isActive) {
-            setIsActive(false);
-        }
-
-        if (count < 60) {
+        if (smoothCount < time * TICK_RATE) {
             const intervalId = setInterval(() => {
-                setCount(prevCount => prevCount + 1);
-            }, 1000);
+                setSmoothCount(prevSmoothCount => {
+                    const newSmoothCount = prevSmoothCount + 1
+
+                    if (newSmoothCount >= time * TICK_RATE && isActive) {
+                        setIsActive(false)
+                        setTimeout(() => openResults(
+                            Number(localStorage.getItem('wpm')),
+                            Number(sessionStorage.getItem('accuracy')),
+                            Number(sessionStorage.getItem('combo'))
+                        ));
+                    }
+
+                    return newSmoothCount
+                });
+            }, (1000 / TICK_RATE));
+
             return () => clearInterval(intervalId);
         }
-    }, [isActive]);
-
-    useEffect(() => {
-        if (!isActive) return;
-
-        if (count < 60) {
-            const intervalId = setInterval(() => {
-                setSmoothCount(prevSmoothCount => prevSmoothCount + 1);
-            }, 5);
-            return () => clearInterval(intervalId);
-        }
-
-    }, [isActive]);
+    }, [isActive, time]);
 
     // to let other components know if countdown is over
-    useEffect(() => {
-        if (count >= 60) {
-            window.dispatchEvent(new Event('testOver'))
-            localStorage.setItem('testActive', 'False')
-            console.log("test ended")
-        }
-    }, [count])
+    // useEffect(() => {
+    //     if (count >= 60) {
+    //         window.dispatchEvent(new Event('testOver'))
+    //         localStorage.setItem('testActive', 'False')
+    //         console.log("test ended")
+    //     }
+    // }, [count])
 
     return (
         <div>
             <div className='flex justify-center space-x-5'>
-                <h2>WPM: {count <= 0 ? "Start typing" : wpm}</h2>
+                <h2>WPM: {smoothCount <= 0 ? "Start typing" : Math.ceil((Number(localStorage.getItem('correctSpaces')) * TICK_RATE) / (smoothCount / 60))}</h2>
                 <h2>Accuracy: {sessionStorage.getItem('accuracy')}%</h2>
             </div>
-            <progress style={{ width: '95vw', margin: '2%' }} value={smoothCount / 12000} />
+            <progress style={{ width: '95vw', margin: '2%' }} value={smoothCount / (TICK_RATE * time)} />
         </div>
     );
 }
