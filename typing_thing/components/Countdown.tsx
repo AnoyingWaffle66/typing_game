@@ -29,10 +29,15 @@ function Countdown() {
     window.addEventListener('reset', resetTimer)
     window.addEventListener('next', resetTimer)
 
+    const isInputFocused = () => {
+        const activeElement = document.activeElement;
+        return activeElement && (activeElement.tagName === 'INPUT');
+      };
+
     // For Handling Keyboard Input
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
-
+            if (isInputFocused()) return
             // Sets Active
             if (!isActive) {
                 setIsActive(true);

@@ -19,10 +19,15 @@ interface KeyProps {
 // Handles the input capture
 const KeyInput: React.FC<KeyProps> = ({ onPress }) => {
   const [currentPressed, setCurrent] = useState<string | null>(null);
+  const isInputFocused = () => {
+    const activeElement = document.activeElement;
+    return activeElement && (activeElement.tagName === 'INPUT');
+  };
 
   useEffect(() => {
     // is called when any key is pressed
     const onKeyDown = (event: KeyboardEvent) => {
+      if(isInputFocused()) return;
       // if the key the user has pressed gives a valid character the char will be captured.
       if (keys.includes(event.key)) {
         setCurrent(event.key);
