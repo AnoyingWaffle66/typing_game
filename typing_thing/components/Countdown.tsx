@@ -77,7 +77,7 @@ function Countdown() {
 
     // to let other components know if countdown is over
     useEffect(() => {
-        if (count >= 10) {
+        if (count >= 60) {
             window.dispatchEvent(new Event('testOver'))
             localStorage.setItem('testActive', 'False')
         }

@@ -7,9 +7,8 @@ export default function Score({combo, wpm, testEnded} : {combo: number; wpm: num
     useEffect(() => {
         if (testEnded){
             let safeWpm = wpm || 1
-            let safeCombo = combo || 1
+            let safeCombo = combo || 2
             let safeAcc = Number.parseInt(String(sessionStorage.getItem('accuracy'))) || 1
-            console.log("wpm: " + safeWpm + " ; combo: " + safeCombo + " ; acc: " + safeAcc)
             let final = 0
             let s = safeAcc * safeWpm * Math.log10(safeCombo)
             if (s <= 0){

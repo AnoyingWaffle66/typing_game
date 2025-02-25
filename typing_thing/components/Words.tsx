@@ -139,18 +139,14 @@ export default function Words({ words }: { words: string[] }) {
   //detects key stroke accuracy
   React.useEffect(() => {
     const current = subWordList[currentIndex]
-    console.log("Key Press: " + key)
-    console.log("typed key length-1: " + current[typedKey.length - 1])
 
     if (key != undefined && current[typedKey.length - 1] != undefined && key != "Backspace") {
       if (key === current[typedKey.length - 1]) {
         setCorrect(prev => prev + 1)
         setCombo(prev => prev + 1)
-        console.log("correct Input!")
       } else {
         setIncorrect(prev => prev + 1)
         setCombo(0)
-        console.log("incorrect!")
       }
     }
   }, [typedKey])
@@ -161,7 +157,6 @@ export default function Words({ words }: { words: string[] }) {
       let acc = Math.floor((correctCount / (correctCount + incorrectCount)) * 100)
       sessionStorage.setItem('accuracy', String(acc))
     }
-    console.log("Combo: " + combo)
   }, [correctCount, incorrectCount])
 
 
