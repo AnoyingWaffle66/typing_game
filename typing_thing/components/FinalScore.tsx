@@ -26,6 +26,7 @@ export default function Score({combo, wpm, testEnded} : {combo: number; wpm: num
         if (score === -1) return
         sessionStorage.setItem('finalScore', String(score))
         console.log("Final score: " + score)
+        console.log("Highest Combo: " + combo)
         window.alert("Final Score: " + score)
     }, [score])
     return null
