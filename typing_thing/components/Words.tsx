@@ -188,6 +188,7 @@ export default function Words({ words }: { words: string[] }) {
                 setCombo(prev => prev + 1)
                 if (combo > highestCombo) {
                     setHighestCombo(combo)
+                    sessionStorage.setItem('combo', String(highestCombo))
                 }
             } else {
                 setIncorrect(prev => prev + 1)
