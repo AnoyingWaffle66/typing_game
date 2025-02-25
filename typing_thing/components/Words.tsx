@@ -2,8 +2,9 @@
 import { useState, useRef, useEffect } from 'react'
 import KeyInput from './keyInput'
 import React from 'react'
+import FinalScore from './FinalScore'
 
-function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]>}) {
+function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: React.RefObject<number[]> }) {
     const [position, setPosition] = useState(0)
 
     const removePreviousWords = (pos: number) => {
@@ -16,11 +17,11 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
                 localStorage.setItem('wordsToRemove', String(divsToRemove.length))
             }
         })
-        if(removing){
+        if (removing) {
             divsToRemove.forEach((div, idx) => {
                 div.remove()
             })
-        } 
+        }
     }
 
     return (
@@ -36,9 +37,9 @@ function Cursor({ cursorPos, letterWidths }: { cursorPos: number; letterWidths: 
 
                 const currentY = el.getBoundingClientRect().y
                 console.log(currentY)
-                if(position === 0){
+                if (position === 0) {
                     setPosition(currentY)
-                } 
+                }
 
                 if (currentY > position) {
                     setPosition(currentY)
@@ -90,6 +91,8 @@ export default function Words({ words }: { words: string[] }) {
     const [subWordList, setSubWordList] = useState<string[]>([])
     const [correctCount, setCorrect] = useState<number>(0)
     const [incorrectCount, setIncorrect] = useState<number>(0)
+    const [combo, setCombo] = useState<number>(0)
+    const [testEnded, setTestEnded] = useState<boolean>(false)
 
     if (subWordList.length <= 30) {
         for (let i = subWordList.length; i < 50; i++) {
@@ -100,7 +103,7 @@ export default function Words({ words }: { words: string[] }) {
 
     const addToList = () => {
         const amount = Number(localStorage.getItem('wordsToRemove'))
-        for (let i = 0; i < amount; i++){
+        for (let i = 0; i < amount; i++) {
             const random = Math.floor(Math.random() * words.length)
             subWordList.push(words[random])
         }
@@ -114,6 +117,9 @@ export default function Words({ words }: { words: string[] }) {
         setIndex(0)
         setCorrect(0)
         setIncorrect(0)
+        setCombo(0)
+        setTestEnded(false)
+        localStorage.setItem('testActive', 'false')
         sessionStorage.setItem('accuracy', '100')
     }
 
@@ -130,6 +136,10 @@ export default function Words({ words }: { words: string[] }) {
         newTest()
     })
 
+    window.addEventListener('testOver', () => {
+        setTestEnded(true)
+    })
+
 
     const handleKeyPress = (keyPress: string) => {
         setKeyPress(keyPress)
@@ -137,6 +147,8 @@ export default function Words({ words }: { words: string[] }) {
             resetTest()
             sessionStorage.setItem('testActive', 'true')
         }
+
+        if (testEnded === true) return
 
         if (keyPress === "Backspace") {
             setTypedKey((prev) => prev.substring(0, prev.length - 1))
@@ -166,16 +178,14 @@ export default function Words({ words }: { words: string[] }) {
     //detects key stroke accuracy
     React.useEffect(() => {
         const current = subWordList[currentIndex]
-        console.log("Key Press: " + key)
-        console.log("typed key length-1: " + current[typedKey.length - 1])
 
         if (key != undefined && current[typedKey.length - 1] != undefined && key != "Backspace") {
             if (key === current[typedKey.length - 1]) {
                 setCorrect(prev => prev + 1)
-                console.log("correct Input!")
+                setCombo(prev => prev + 1)
             } else {
                 setIncorrect(prev => prev + 1)
-                console.log("incorrect!")
+                setCombo(0)
             }
         }
     }, [typedKey])
@@ -193,6 +203,7 @@ export default function Words({ words }: { words: string[] }) {
     return (
         <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip">
             <KeyInput onPress={handleKeyPress} />
+            <FinalScore combo={combo} wpm={Number.parseInt(String(localStorage.getItem('wpm')))} testEnded={testEnded} />
             {
                 subWordList.map((word, wordIndex) => {
                     const current = wordIndex < currentIndex ? typedWords[wordIndex]
