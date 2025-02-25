@@ -57,12 +57,12 @@ function Countdown({time, openResults}: {time: number, openResults: (wpm: number
                     const newSmoothCount = prevSmoothCount + 1
 
                     if (newSmoothCount >= time * TICK_RATE && isActive) {
+                        const wpm = Number(localStorage.getItem('wpm'))
+                        const accuracy = Number(sessionStorage.getItem('accuracy'))
+                        const combo = Number(sessionStorage.getItem('combo'))
+
                         setIsActive(false)
-                        setTimeout(() => openResults(
-                            Number(localStorage.getItem('wpm')),
-                            Number(sessionStorage.getItem('accuracy')),
-                            Number(sessionStorage.getItem('combo'))
-                        ));
+                        setTimeout(() => openResults(wpm, accuracy, combo));
                     }
 
                     return newSmoothCount
