@@ -92,6 +92,7 @@ export default function Words({ words }: { words: string[] }) {
     const [correctCount, setCorrect] = useState<number>(0)
     const [incorrectCount, setIncorrect] = useState<number>(0)
     const [combo, setCombo] = useState<number>(0)
+    const [highestCombo, setHighestCombo] = useState<number>(0)
     const [testEnded, setTestEnded] = useState<boolean>(false)
     const [resetCounter, setResetCounter] = useState(0);
 
@@ -119,6 +120,7 @@ export default function Words({ words }: { words: string[] }) {
         setCorrect(0)
         setIncorrect(0)
         setCombo(0)
+        setHighestCombo(0)
         setTestEnded(false)
         setResetCounter(prev => prev + 1)
         localStorage.setItem('testActive', 'false')
@@ -184,6 +186,9 @@ export default function Words({ words }: { words: string[] }) {
             if (key === current[typedKey.length - 1]) {
                 setCorrect(prev => prev + 1)
                 setCombo(prev => prev + 1)
+                if (combo > highestCombo) {
+                    setHighestCombo(combo)
+                }
             } else {
                 setIncorrect(prev => prev + 1)
                 setCombo(0)
@@ -204,7 +209,7 @@ export default function Words({ words }: { words: string[] }) {
     return (
         <div style={{ height: 200 }} className="flex flex-wrap items-center justify-center overflow-clip" key={resetCounter}>
             <KeyInput onPress={handleKeyPress} />
-            <FinalScore combo={combo} wpm={Number.parseInt(String(localStorage.getItem('wpm')))} testEnded={testEnded} />
+            <FinalScore combo={highestCombo} wpm={Number.parseInt(String(localStorage.getItem('wpm')))} testEnded={testEnded} />
             {
                 subWordList.map((word, wordIndex) => {
                     const current = wordIndex < currentIndex ? typedWords[wordIndex]
